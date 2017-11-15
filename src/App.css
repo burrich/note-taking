@@ -1,0 +1,79 @@
+/* TODO : sass + flex mixin */
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+
+  width: 90vw;
+  margin: 0 auto;
+}
+
+.RichEditor-header h1 {
+  text-align: center;
+}
+
+.RichEditor-root {
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.RichEditor-styleButton {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.RichEditor-editor {
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+
+  padding: 20px;
+  margin-bottom: 40px;
+  border-radius: 0 5px 5px 5px;
+  background: white;
+  cursor: text;
+  /*border: 1px solid grey;*/
+}
+
+.DraftEditor-root {
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.DraftEditor-editorContainer {
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.public-DraftEditor-content {
+  flex-grow: 1;
+}
+
+/* Code block */
+/* TODO: change selectors */
+.DraftEditor-root pre {
+  /*border: 1px solid #ccc;*/
+  background: #f2f2f2;
+  border-radius: .2em;
+  margin: 0;
+  padding: .5em;
+}
+
+.DraftEditor-root pre > pre {
+  background: none; /* ? */
+  border: none;
+  padding: 0;
+}
+
