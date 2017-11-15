@@ -45,13 +45,35 @@ class App extends Component {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC'));
   }
 
-  toggleStyleUnderline() {
+  toggleStyleUnderline(e) {
+    e.preventDefault();
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'UNDERLINE'));
-  } 
+  }
 
-  toggleStyleCode() {
+  toggleStyleStrikethrough(e) {
+    e.preventDefault();
+    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'STRIKETHROUGH'));
+  }
+
+  toggleStyleBlockquote(e) {
+    e.preventDefault();
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'blockquote'));
+  }
+
+  toggleStyleCode(e) {
+    e.preventDefault();
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'code-block'));
-  }  
+  }
+
+  toggleStyleUl(e) {
+    e.preventDefault();
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'unordered-list-item'));
+  }
+
+  toggleStyleOl(e) {
+    e.preventDefault();
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'ordered-list-item'));
+  }
 
   render() {
     // TODO: move h1 outside this component 
@@ -76,8 +98,24 @@ class App extends Component {
               Underline
             </span>
             <span className="RichEditor-styleButton"
+                  onMouseDown={this.toggleStyleStrikethrough.bind(this)}>
+              Strikethrough
+            </span>
+            <span className="RichEditor-styleButton"
+                  onMouseDown={this.toggleStyleBlockquote.bind(this)}>
+              Blockquote
+            </span>
+            <span className="RichEditor-styleButton"
                   onMouseDown={this.toggleStyleCode.bind(this)}>
               Code
+            </span>
+            <span className="RichEditor-styleButton"
+                  onMouseDown={this.toggleStyleUl.bind(this)}>
+              Ul
+            </span>
+            <span className="RichEditor-styleButton"
+                  onMouseDown={this.toggleStyleOl.bind(this)}>
+              Ol
             </span>
           </div>
 
@@ -85,12 +123,20 @@ class App extends Component {
             <Editor editorState={this.state.editorState}
                     onChange={this.onChange}
                     handleKeyCommand={this.handleKeyCommand.bind(this)}
+                    blockStyleFn={getBlockStyle}
                     ref={el => this.domEditor = el} 
                     plugins={[]} />
           </div>
         </div>
       </div>
     );
+  }
+}
+
+function getBlockStyle(contentBlock) {
+  const type = contentBlock.getType();
+  if (type === 'blockquote') {
+    return 'RichEditor-blockquote';
   }
 }
 
