@@ -1,3 +1,14 @@
 # Note taking
 
-A note taking react app with draft.js
+A **react** note taking app with **draft.js**
+
+## Setup
+
+```sh
+npm install
+```
+
+## Features
+
+- display a rich text editor
+- *coming...*
