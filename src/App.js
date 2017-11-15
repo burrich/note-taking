@@ -50,7 +50,7 @@ class App extends Component {
   } 
 
   toggleStyleCode() {
-    this.onChange(RichUtils.toggleCode(this.state.editorState));
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'code-block'));
   }  
 
   render() {
@@ -63,20 +63,20 @@ class App extends Component {
 
         <div className="RichEditor-root">
           <div className="RichEditor-controls">
-            <span onMouseDown={this.toggleStyleBlock.bind(this)}
-                  class="RichEditor-styleButton">
+            <span className="RichEditor-styleButton"
+                  onMouseDown={this.toggleStyleBlock.bind(this)}>
               Bold
             </span>
-            <span onMouseDown={this.toggleStyleItalic.bind(this)}
-                  class="RichEditor-styleButton">
+            <span className="RichEditor-styleButton"
+                  onMouseDown={this.toggleStyleItalic.bind(this)}>
               Italic
             </span>
-            <span onMouseDown={this.toggleStyleUnderline.bind(this)}
-                  class="RichEditor-styleButton">
+            <span className="RichEditor-styleButton"
+                  onMouseDown={this.toggleStyleUnderline.bind(this)}>
               Underline
             </span>
-            <span onMouseDown={this.toggleStyleCode.bind(this)}
-                  class="RichEditor-styleButton">
+            <span className="RichEditor-styleButton"
+                  onMouseDown={this.toggleStyleCode.bind(this)}>
               Code
             </span>
           </div>
