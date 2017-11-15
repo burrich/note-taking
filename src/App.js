@@ -75,6 +75,11 @@ class App extends Component {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'ordered-list-item'));
   }
 
+  onTab(e) {
+    const maxDepth = 4;
+    this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
+  }
+
   render() {
     // TODO: move h1 outside this component 
     return (
@@ -123,7 +128,9 @@ class App extends Component {
             <Editor editorState={this.state.editorState}
                     onChange={this.onChange}
                     handleKeyCommand={this.handleKeyCommand.bind(this)}
+                    onTab={this.onTab.bind(this)}
                     blockStyleFn={getBlockStyle}
+                    spellCheck={true}
                     ref={el => this.domEditor = el} 
                     plugins={[]} />
           </div>
