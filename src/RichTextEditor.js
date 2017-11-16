@@ -17,11 +17,20 @@ class RichTextEditor extends Component {
       editorState: EditorState.createEmpty()
     };
 
-    this.onChange = (editorState) => this.setState({editorState});
-    this.focus    = () => this.domEditor.focus();
+    // this methods binding
+    this.onChange = this.onChange.bind(this);
+    this.focus    = this.focus.bind(this);
   }
 
   componentDidMount() {
+    this.focus();
+  }
+
+  onChange(editorState) {
+    this.setState({editorState});
+  }
+
+  focus() {
     this.domEditor.focus();
   }
 
