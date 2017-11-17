@@ -50,12 +50,12 @@ class RichTextEditor extends Component {
     return 'not-handled';
   }
   
-  toggleInlineStyle(style) {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, style));
+  toggleInlineStyle(styleCode) {
+    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, styleCode));
   }
 
-  toggleBlockStyle(style) {
-    this.onChange(RichUtils.toggleBlockType(this.state.editorState, style));
+  toggleBlockStyle(styleCode) {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, styleCode));
   }
 
   render() {
@@ -126,27 +126,30 @@ function Controls(props) {
 class StyleButton extends Component {
   constructor(props) {
     super(props);
-    this.styles = (this.props.type === 'inline') ? inlineStyles : blockStyles ;
-
+    this.style = this.getStyle();
+    
     // this methods binding
     this.onToggle = this.onToggle.bind(this);
   }
 
+  getStyle() {
+    if (this.props.type === 'inline') {
+      return inlineStyles[this.props.name];
+    }
+    // this.props.type === 'block'
+    return blockStyles[this.props.name];
+  }
+
   onToggle(e) {
     e.preventDefault();
-
-    const onToggle  = this.props.onToggle;
-    const name = this.props.name;
-    onToggle(this.styles[name].style);
+    this.props.onToggle(this.style.code);
   }
 
   render() {
-    const label = this.styles[this.props.name].label;
-
     return(
       <span className="RichEditor-styleButton"
             onMouseDown={this.onToggle}>
-        {label}
+        {this.style.label}
       </span>
     );
   }
@@ -155,40 +158,40 @@ class StyleButton extends Component {
 // Label and style name for inline StyleButton components
 const inlineStyles = {
   bold: {
-    label: 'Bold',
-    style: 'BOLD'
+    code: 'BOLD',
+    label: 'Bold'
   },
   italic: {
-    label: 'Italic',
-    style: 'ITALIC'
+    code: 'ITALIC',
+    label: 'Italic'
   },
   underline: {
-    label: 'Underline',
-    style: 'UNDERLINE'
+    code: 'UNDERLINE',
+    label: 'Underline'
   },
   strikethrough: {
-    label: 'Strikethrough',
-    style: 'STRIKETHROUGH'
+    code: 'STRIKETHROUGH',
+    label: 'Strikethrough'
   },
 }
 
 // Label and style name for block StyleButton components
 const blockStyles = {
   quotes: {
-    label: 'Quotes',
-    style: 'blockquote'
+    code: 'blockquote',
+    label: 'Quotes'
   },
   code: {
-    label: 'Code',
-    style: 'code-block'
+    code: 'code-block',
+    label: 'Code'
   },
   ul: {
-    label: 'Ul',
-    style: 'unordered-list-item'
+    code: 'unordered-list-item',
+    label: 'Ul'
   },
   ol: {
-    label: 'Ol',
-    style: 'ordered-list-item'
+    code: 'ordered-list-item',
+    label: 'Ol'
   },
 }
 
