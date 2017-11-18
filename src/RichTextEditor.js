@@ -59,13 +59,16 @@ class RichTextEditor extends Component {
   }
 
   render() {
+    const editorState = this.state.editorState;
+
     return (
       <div className="RichEditor-root">
-        <Controls toggleInlineStyle={this.toggleInlineStyle}
+        <Controls editorState={editorState}
+                  toggleInlineStyle={this.toggleInlineStyle}
                   toggleBlockStyle={this.toggleBlockStyle} />
 
         <div className="RichEditor-editor" onClick={this.focus}>
-          <Editor editorState={this.state.editorState}
+          <Editor editorState={editorState}
                   onChange={this.onChange}
                   handleKeyCommand={this.handleKeyCommand}
                   onTab={this.onTab}
@@ -83,38 +86,58 @@ class RichTextEditor extends Component {
  * Controls component container for StyleButton components.
  */
 function Controls(props) {
+  const editorState = props.editorState;
+
+  // get inline style
+  const currentInlineStyle = props.editorState.getCurrentInlineStyle();
+  
+  // get block style
+  const selection = editorState.getSelection(); 
+  const currentBlockStyle = editorState
+    .getCurrentContent()
+    .getBlockForKey(selection.getStartKey())
+    .getType();
+
   return (
     <div className="RichEditor-controls">
       <StyleButton name="bold"
                    type="inline"
+                   editorStyle={currentInlineStyle}
                    onToggle={props.toggleInlineStyle} />
 
       <StyleButton name="italic"
                    type="inline"
+                   editorStyle={currentInlineStyle}
                    onToggle={props.toggleInlineStyle} />
 
       <StyleButton name="underline"
                    type="inline"
+                   editorStyle={currentInlineStyle}
                    onToggle={props.toggleInlineStyle} />
 
       <StyleButton name="strikethrough"
                    type="inline"
+                   editorStyle={currentInlineStyle}
                    onToggle={props.toggleInlineStyle} />
 
       <StyleButton name="quotes"
                    type="block"
+                   editorStyle={currentBlockStyle}
                    onToggle={props.toggleBlockStyle} />
 
       <StyleButton name="code"
                    type="block"
+                   editorStyle={currentBlockStyle}
                    onToggle={props.toggleBlockStyle} />
 
       <StyleButton name="ul"
                    type="block"
+                   editorStyle={currentBlockStyle}
                    onToggle={props.toggleBlockStyle} />
 
       <StyleButton name="ol"
                    type="block"
+                   editorStyle={currentBlockStyle}
                    onToggle={props.toggleBlockStyle} />
     </div>
   );
@@ -126,6 +149,7 @@ function Controls(props) {
 class StyleButton extends Component {
   constructor(props) {
     super(props);
+    this.type = this.props.type;
     this.style = this.getStyle();
     
     // this methods binding
@@ -133,11 +157,21 @@ class StyleButton extends Component {
   }
 
   getStyle() {
-    if (this.props.type === 'inline') {
+    if (this.type === 'inline') {
       return inlineStyles[this.props.name];
     }
-    // this.props.type === 'block'
+    // this.type === 'block'
     return blockStyles[this.props.name];
+  }
+
+  isActive() {
+    const editorStyle = this.props.editorStyle;
+
+    if (this.type === 'inline') {
+      return editorStyle.has(this.style.code);
+    }
+    // this.type === 'block'
+    return editorStyle === this.style.code;
   }
 
   onToggle(e) {
@@ -146,8 +180,13 @@ class StyleButton extends Component {
   }
 
   render() {
+    let className = 'RichEditor-styleButton';
+    if (this.isActive()) {
+      className += ' RichEditor-activeButton';
+    }
+
     return(
-      <span className="RichEditor-styleButton"
+      <span className={className}
             onMouseDown={this.onToggle}>
         {this.style.label}
       </span>
