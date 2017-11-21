@@ -88,10 +88,10 @@ class RichTextEditor extends Component {
 function Controls(props) {
   const editorState = props.editorState;
 
-  // get inline style
+  // get current editor inline style
   const currentInlineStyle = props.editorState.getCurrentInlineStyle();
-  
-  // get block style
+
+  // get current editor block style
   const selection = editorState.getSelection(); 
   const currentBlockStyle = editorState
     .getCurrentContent()
