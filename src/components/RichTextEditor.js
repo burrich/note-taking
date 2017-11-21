@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {EditorState, RichUtils} from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 
-import '../node_modules/draft-js/dist/Draft.css'; // TODO: move file outside node_modules
+import '../../node_modules/draft-js/dist/Draft.css'; // TODO: move file outside node_modules
 import './RichTextEditor.css';
 
 /**
