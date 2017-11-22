@@ -6,15 +6,6 @@
   min-height: 100%;
 }
 
-.RichEditor-styleButton {
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.RichEditor-activeButton {
-  color: #5890ff;
-}
-
 .RichEditor-editor {
   flex-grow: 1;
 

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import './styles/style-button.css';
+
 /**
  * StyleButton component which can be inline or block (props.type).
  */
