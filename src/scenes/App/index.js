@@ -1,10 +1,10 @@
 import React from 'react';
-import RichTextEditor from './RichTextEditor';
+import RichTextEditor from '../../components/RichTextEditor';
 
-import './App.css';
+import './styles/default.css';
 
 /**
- * App functionnal component
+ * App scene functionnal component.
  *
  */
 function App() {

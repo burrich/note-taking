@@ -1,9 +1,7 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import { shallow } from 'enzyme'
-
-import App from '../App';
-import RichTextEditor from '../RichTextEditor';
+import App from '../';
+import RichTextEditor from '../../../components/RichTextEditor';
 
 test('find one RichTextEditor', () => {
   const app = shallow(<App />);
