@@ -59,14 +59,37 @@ class RichTextEditor extends Component {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, styleCode));
   }
 
+  getCurrentStyle() {
+    const editorState = this.state.editorState;
+
+    // get current editor inline style
+    const currentInlineStyle = editorState.getCurrentInlineStyle();
+
+    // get current editor block style
+    const selection = editorState.getSelection(); 
+    const currentBlockStyle = editorState
+      .getCurrentContent()
+      .getBlockForKey(selection.getStartKey())
+      .getType();
+
+    return {
+      inline: currentInlineStyle,
+      block: currentBlockStyle
+    };
+  }
+
   render() {
     const editorState = this.state.editorState;
+    const currentStyle = this.getCurrentStyle();
+    const toggleStyle = {
+      inline: this.toggleInlineStyle,
+      block: this.toggleBlockStyle,
+    };
 
     return (
       <div className="RichEditor-root">
-        <Controls editorState={editorState}
-                  toggleInlineStyle={this.toggleInlineStyle}
-                  toggleBlockStyle={this.toggleBlockStyle} />
+        <Controls currentStyle={currentStyle}
+                  toggleStyle={toggleStyle} />
 
         <div className="RichEditor-editor" onClick={this.focus}>
           <Editor editorState={editorState}

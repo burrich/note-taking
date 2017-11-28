@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Active inline style button renders correctly 1`] = `
+<StyleButton
+  active={true}
+  onToggle={[Function]}
+  style={
+    Object {
+      "code": "BOLD",
+      "label": "Bold",
+    }
+  }
+/>
+`;
+
+exports[`Inative inline style button renders correctly 1`] = `
+<StyleButton
+  active={false}
+  onToggle={[Function]}
+  style={
+    Object {
+      "code": "BOLD",
+      "label": "Bold",
+    }
+  }
+/>
+`;

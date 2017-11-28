@@ -1,63 +1,50 @@
 import React from 'react';
-import StyleButton from './StyleButton';
+import InlineStyleButton from './InlineStyleButton';
+import BlockStyleButton from './BlockStyleButton';
 
 /**
  * Controls component container for StyleButton components.
+ * TODO: return an array map
  */
 function Controls(props) {
-  const editorState = props.editorState;
-
-  // get current editor inline style
-  const currentInlineStyle = props.editorState.getCurrentInlineStyle();
-
-  // get current editor block style
-  const selection = editorState.getSelection(); 
-  const currentBlockStyle = editorState
-    .getCurrentContent()
-    .getBlockForKey(selection.getStartKey())
-    .getType();
+  const inlineStyle       = props.currentStyle.inline;
+  const blockStyle        = props.currentStyle.block;
+  const toggleInlineStyle = props.toggleStyle.inline;
+  const toggleBlockStyle  = props.toggleStyle.block;
 
   return (
     <div className="RichEditor-controls">
-      <StyleButton name="bold"
-                   type="inline"
-                   editorStyle={currentInlineStyle}
-                   onToggle={props.toggleInlineStyle} />
+      <InlineStyleButton name="bold"
+                         editorStyle={inlineStyle}
+                         onToggle={toggleInlineStyle} />
 
-      <StyleButton name="italic"
-                   type="inline"
-                   editorStyle={currentInlineStyle}
-                   onToggle={props.toggleInlineStyle} />
+      <InlineStyleButton name="italic"
+                         editorStyle={inlineStyle}
+                         onToggle={toggleInlineStyle} />
 
-      <StyleButton name="underline"
-                   type="inline"
-                   editorStyle={currentInlineStyle}
-                   onToggle={props.toggleInlineStyle} />
+      <InlineStyleButton name="underline"
+                         editorStyle={inlineStyle}
+                         onToggle={toggleInlineStyle} />
 
-      <StyleButton name="strikethrough"
-                   type="inline"
-                   editorStyle={currentInlineStyle}
-                   onToggle={props.toggleInlineStyle} />
+      <InlineStyleButton name="strikethrough"
+                         editorStyle={inlineStyle}
+                         onToggle={toggleInlineStyle} />
 
-      <StyleButton name="quotes"
-                   type="block"
-                   editorStyle={currentBlockStyle}
-                   onToggle={props.toggleBlockStyle} />
+      <BlockStyleButton name="quotes"
+                        editorStyle={blockStyle}
+                        onToggle={toggleBlockStyle} />
 
-      <StyleButton name="code"
-                   type="block"
-                   editorStyle={currentBlockStyle}
-                   onToggle={props.toggleBlockStyle} />
+      <BlockStyleButton name="code"
+                        editorStyle={blockStyle}
+                        onToggle={toggleBlockStyle} />
 
-      <StyleButton name="ul"
-                   type="block"
-                   editorStyle={currentBlockStyle}
-                   onToggle={props.toggleBlockStyle} />
+      <BlockStyleButton name="ul"
+                        editorStyle={blockStyle}
+                        onToggle={toggleBlockStyle} />
 
-      <StyleButton name="ol"
-                   type="block"
-                   editorStyle={currentBlockStyle}
-                   onToggle={props.toggleBlockStyle} />
+      <BlockStyleButton name="ol"
+                        editorStyle={blockStyle}
+                        onToggle={toggleBlockStyle} />
     </div>
   );
 }
