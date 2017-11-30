@@ -1,5 +1,6 @@
 import React from 'react';
 import RichTextEditor from '../../components/RichTextEditor';
+import NotesList from '../../components/NotesList';
 
 import './styles/default.css';
 
@@ -10,9 +11,21 @@ import './styles/default.css';
 function App() {
   return (
     <div className="App">
-      <h1>Note taking</h1>
+      <div className="header">
+        <h1>Note taking</h1>
+      </div>
+      
+      <div className="container-wrapper">
+        <div className="container">
+          <div className="container-left">
+            <NotesList />
+          </div>
 
-      <RichTextEditor />
+          <div className="container-right">
+            <RichTextEditor />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
