@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { EditorState, RichUtils } from 'draft-js';
-import Editor from 'draft-js-plugins-editor';
+import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
+// import Editor from 'draft-js-plugins-editor';
 import Controls from './Controls';
 
 import '../../../node_modules/draft-js/dist/Draft.css'; // TODO: move file outside node_modules
@@ -12,9 +12,7 @@ import './styles/default.css';
 class RichTextEditor extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      editorState: EditorState.createEmpty()
-    };
+    this.state = { editorState: EditorState.createEmpty() };
 
     // this methods binding
     this.onChange          = this.onChange.bind(this);
@@ -23,10 +21,26 @@ class RichTextEditor extends Component {
     this.handleKeyCommand  = this.handleKeyCommand.bind(this);
     this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
     this.toggleBlockStyle  = this.toggleBlockStyle.bind(this);
+    this.save  = this.save.bind(this);
   }
 
   componentDidMount() {
     this.focus();
+
+    fetch('/api/rte')
+      .then(res => res.json())
+      .then(data => {
+        // if (!data) {
+        //   return this.setState({ editorState: EditorState.createEmpty() });
+        // }
+
+        const newContentState = convertFromRaw(data); 
+        const newEditorState = EditorState.createWithContent(newContentState);
+        this.setState({ editorState: newEditorState });
+
+        // this.focus();
+      });
+      // .then(data => console.log(data));
   }
 
   onChange(editorState) {
@@ -78,6 +92,13 @@ class RichTextEditor extends Component {
     };
   }
 
+  save() {
+    const contentState = this.state.editorState.getCurrentContent();
+    const rawContent = convertToRaw(contentState);
+    console.log(rawContent);
+    console.log(JSON.stringify(rawContent, null, 2));
+  }
+
   render() {
     const editorState = this.state.editorState;
     const currentStyle = this.getCurrentStyle();
@@ -86,10 +107,15 @@ class RichTextEditor extends Component {
       block: this.toggleBlockStyle,
     };
 
+    // if (!editorState) {
+    //   return <div>LOADING...</div>;
+    // }
+
     return (
       <div className="RichEditor-root">
         <Controls currentStyle={currentStyle}
-                  toggleStyle={toggleStyle} />
+                  toggleStyle={toggleStyle}
+                  save={this.save} />
 
         <div className="RichEditor-editor" onClick={this.focus}>
           <Editor editorState={editorState}
@@ -98,8 +124,8 @@ class RichTextEditor extends Component {
                   onTab={this.onTab}
                   blockStyleFn={getBlockStyle}
                   spellCheck={true}
-                  ref={el => this.domEditor = el} 
-                  plugins={[]} />
+                  ref={el => this.domEditor = el} />
+                  {/*plugins={[]} />*/}
         </div>
       </div>
     );
@@ -107,7 +133,7 @@ class RichTextEditor extends Component {
 }
 
 /**
- * Define CSS class to style blocks elements
+ * Define CSS class to style blocks elements.
  */
 function getBlockStyle(contentBlock) {
   const type = contentBlock.getType();
