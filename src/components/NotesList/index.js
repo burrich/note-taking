@@ -113,6 +113,7 @@ class NotesList extends Component {
         <div className="NotesList-add">
           <input 
             type="text"
+            className="no-border"
             placeholder="Add a note"
             value={newNote}
             onKeyDown={this.handleNewNoteKeyDown}
@@ -140,17 +141,19 @@ class NotesList extends Component {
             }
           }}>
 
-          <form onSubmit={this.handleEditNoteSubmit}>
+          <form onSubmit={this.handleEditNoteSubmit} className="form-inline">
             <label for="note-name">Note name : </label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               id="note-name" 
               value={this.state.editNote} 
-              onChange={this.handleEditNoteChange} />
-
-            <input type="submit" value="Update" />
+              onChange={this.handleEditNoteChange} /> {/* */}
+            <input
+              type="submit"
+              value="Update"
+              className="btn" />
           </form>
-        </ReactModal>        
+        </ReactModal>
       </div>
     );
   }
