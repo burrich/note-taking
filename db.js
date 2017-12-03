@@ -5,7 +5,6 @@ const url = 'mongodb://localhost:27017/noteTakingDB';
 
 /**
  * Connect to mongodb db (async) and get db object.
- * db launch : mongod --dbpath C:\MongoDB\data
  */
 exports.connect = function(callback) {
   MongoClient.connect(url, (err, db) => {

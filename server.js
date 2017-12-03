@@ -33,7 +33,7 @@ router.get('/notes', (req, res, next) => {
   notes.find().toArray((err, results) => {
     if (err) return next(err);
 
-    console.log('READ :', results);
+    console.log('READ :', results.result);
     res.json(results);
   });
 });
@@ -46,7 +46,7 @@ router.get('/notes/:noteId', (req, res, next) => {
   notes.findOne({ _id: objectId }, (err, result) => {
     if (err) return next(err);
 
-    console.log('READ :', result);
+    console.log('READ :', result.result);
     res.json(result);
   });
 });
@@ -54,12 +54,17 @@ router.get('/notes/:noteId', (req, res, next) => {
 // Insert
 router.post('/notes', (req, res, next) => {
   const note = req.body;
-  const notes = db.collection('notes');
+  // TODO: use lodash or Underscore lib to check empty object
+  if (Object.keys(note).length === 0) {
+    const err = new Error('Invalid body content');
+    return next(err);
+  }
 
+  const notes = db.collection('notes');
   notes.insertOne(note, (err, result) => {
     if (err) return next(err);
 
-    console.log('CREATE', result);
+    console.log('CREATE', result.result);
     res.json(result);
   });
 });
@@ -74,7 +79,7 @@ router.put('/notes/:noteId', (req, res, next) => {
   notes.updateOne({ _id: objectId }, note, (err, result) => {
     if (err) return next(err);
 
-    console.log('UPDATE :', result);
+    console.log('UPDATE :', result.result);
     res.json(result);
   });
 });
@@ -87,7 +92,7 @@ router.delete('/notes/:noteId', (req, res, next) => {
   notes.deleteOne({ _id: objectId }, (err, result) => {
     if (err) return next(err);
 
-    console.log('DELETE :', result);
+    console.log('DELETE :', result.result);
     res.json(result);
   });
 });
@@ -96,7 +101,7 @@ router.delete('/notes/:noteId', (req, res, next) => {
  * Init app and listen for connections
  */
 const app = express();
-// app.use(bodyParser.json()); // parsing application/json
+app.use(bodyParser.json()); // parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // parsing application/x-www-form-urlencoded
 app.use('/api', router);
 

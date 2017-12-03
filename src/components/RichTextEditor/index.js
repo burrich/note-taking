@@ -26,21 +26,7 @@ class RichTextEditor extends Component {
 
   componentDidMount() {
     this.focus();
-
-    fetch('/api/rte')
-      .then(res => res.json())
-      .then(data => {
-        // if (!data) {
-        //   return this.setState({ editorState: EditorState.createEmpty() });
-        // }
-
-        const newContentState = convertFromRaw(data); 
-        const newEditorState = EditorState.createWithContent(newContentState);
-        this.setState({ editorState: newEditorState });
-
-        // this.focus();
-      });
-      // .then(data => console.log(data));
+    this.save();
   }
 
   onChange(editorState) {
@@ -93,10 +79,39 @@ class RichTextEditor extends Component {
   }
 
   save() {
-    const contentState = this.state.editorState.getCurrentContent();
-    const rawContent = convertToRaw(contentState);
+    const editorState = this.state.editorState;
+    const rawContent = convertToRaw(editorState.getCurrentContent());
     console.log(rawContent);
-    console.log(JSON.stringify(rawContent, null, 2));
+    // console.log(JSON.stringify(rawContent, null, 2));
+    const rawContentJson = JSON.stringify(rawContent);
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    
+    const init = {
+      method: 'POST',
+      mode: 'cors',
+      headers: headers,
+      body: rawContentJson
+    };
+
+    fetch('/api/notes', init)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Response failed');
+        }
+        console.log(res);
+        return res.json();
+      })
+      .then(data => {
+        if (!data || !data.ok || data.n !== 1) {
+          throw new Error('Unexpected json result : ' + JSON.stringify(data));
+        }
+        console.log('Response data : ', data);
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
   render() {
