@@ -12,7 +12,11 @@ import './styles/default.css';
 class RichTextEditor extends Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty() };
+
+    const contentState = convertFromRaw(this.props.note);
+    const editorState = EditorState.createWithContent(contentState); 
+    this.state = { editorState: editorState };
+    // this.state = { editorState: EditorState.createEmpty() };
 
     // this methods binding
     this.onChange          = this.onChange.bind(this);
@@ -25,12 +29,15 @@ class RichTextEditor extends Component {
   }
 
   componentDidMount() {
-    this.focus();
-    this.save();
+    // this.focus();
+    // this.save();
   }
 
-  onChange(editorState) {
+  onChange(editorState) {  
     this.setState({ editorState });
+  
+    // const rawContent = convertToRaw(editorState.getCurrentContent());
+    // console.log(JSON.stringify(rawContent, null, 2));
   }
 
   onTab(e) {
