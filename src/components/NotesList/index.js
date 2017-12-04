@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 // import ReactModal from 'react-modal'
+import NotesListItem from './NotesListItem'; 
 
 import './styles/default.css';
 
@@ -23,31 +24,24 @@ class NotesList extends Component {
 
   render() {
     // const newNote = this.state.newNote;
-    
-    const notes = this.props.notes.map((note) =>
-      <div key={note.id} className="NotesList-item">
-        <div className="NotesList-item-value">
-          {note.name}
-        </div>
-
-        <div className="NotesList-item-controls">
-          <span style={{ cursor: 'pointer' }}>E</span> {/* */}
-          <span style={{ cursor: 'pointer' }}>X</span>
-        </div>
-      </div>
+    const notes = this.props.notes;
+    const notesListItems = notes.map((note) =>
+      <NotesListItem 
+        key={note.id} 
+        name={note.name} />
     );
 
     return (
       <div className="NotesList-root">
         <div className="NotesList-add">
-          <input 
+          <input
             type="text"
             className="no-border"
             placeholder="Add a note" />
         </div>
 
         <div className="NotesList-content">
-          {notes}
+          {notesListItems}
         </div>
       </div>
     );
