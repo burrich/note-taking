@@ -11,13 +11,19 @@ import './styles/default.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
-      notes: NOTES
+      notes: NOTES,
+      selectedNote: 0
     };
 
     // this methods binding
+    this.handleSelectNote = this.handleSelectNote.bind(this);
     this.handleRemoveNote = this.handleRemoveNote.bind(this);
+  }
+
+  handleSelectNote(index) {
+    this.setState({ selectedNote: index });
   }
 
   handleRemoveNote(id) {
@@ -28,7 +34,8 @@ class App extends Component {
   }
 
   render() {
-    const notes = this.state.notes;
+    const notes        = this.state.notes;
+    const selectedNote = this.state.selectedNote;
 
     return (
       <div className="App">
@@ -42,11 +49,12 @@ class App extends Component {
               {/* TODO: pass only notes names */}
               <NotesList 
                 notes={notes}
+                onSelectNote={this.handleSelectNote}
                 onRemoveNote={this.handleRemoveNote} />
             </div>
 
             <div className="container-right">
-              <RichTextEditor note={notes[0]} />
+              <RichTextEditor note={notes[selectedNote]} />
             </div>
           </div>
         </div>

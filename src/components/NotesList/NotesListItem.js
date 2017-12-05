@@ -8,6 +8,10 @@ class NotesListItem extends Component {
     super(props);
   }
 
+  handleSelect(id) {
+    this.props.onSelect();
+  }
+
   handleRemove(id) {
     this.props.onRemove(id);
   }
@@ -18,7 +22,12 @@ class NotesListItem extends Component {
     return (
       <div className="NotesList-item">
         <div className="NotesList-item-value">
-          {note.name}
+          <span 
+            style={{ cursor: 'pointer' }}
+            onClick={this.handleSelect.bind(this, note.id)}>
+
+            {note.name}
+          </span>
         </div>
 
         <div className="NotesList-item-controls">

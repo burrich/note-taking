@@ -23,10 +23,11 @@ class NotesList extends Component {
   render() {
     // const newNote = this.state.newNote;
     const notes = this.props.notes;
-    const notesListItems = notes.map((note) =>
+    const notesListItems = notes.map((note, index) =>
       <NotesListItem 
         key={note.id} 
         note={note}
+        onSelect={this.props.onSelectNote.bind(this, index)}
         onRemove={this.props.onRemoveNote} />
     );
 
