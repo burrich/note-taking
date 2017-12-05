@@ -21,6 +21,7 @@ class App extends Component {
     // this methods binding
     this.handleAddNote    = this.handleAddNote.bind(this);
     this.handleSelectNote = this.handleSelectNote.bind(this);
+    this.handleEditNote   = this.handleEditNote.bind(this);
     this.handleRemoveNote = this.handleRemoveNote.bind(this);
   }
 
@@ -60,6 +61,14 @@ class App extends Component {
     this.setState({ selectedNote: index });
   }
 
+  handleEditNote(id, name) {
+    // swallow copy for immutability
+    const updatedNotes = this.state.notes.slice();
+    updatedNotes.find(elt => elt.id === id).name = name;
+
+    this.setState({ notes: updatedNotes });
+  }
+
   handleRemoveNote(id) {
     const notes = this.state.notes;
     const updatedNotes = notes.filter(note => note.id !== id);
@@ -93,6 +102,7 @@ class App extends Component {
                 notes={notes}
                 onAddNote={this.handleAddNote}
                 onSelectNote={this.handleSelectNote}
+                onEditNote={this.handleEditNote}
                 onRemoveNote={this.handleRemoveNote} />
             </div>
 

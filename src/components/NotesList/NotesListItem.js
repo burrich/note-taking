@@ -8,14 +8,6 @@ class NotesListItem extends Component {
     super(props);
   }
 
-  handleSelect(id) {
-    this.props.onSelect();
-  }
-
-  handleRemove(id) {
-    this.props.onRemove(id);
-  }
-
   render() {
     const note = this.props.note;
 
@@ -24,17 +16,22 @@ class NotesListItem extends Component {
         <div className="NotesList-item-value">
           <span 
             style={{ cursor: 'pointer' }}
-            onClick={this.handleSelect.bind(this, note.id)}>
+            onClick={this.props.onSelect}>
 
             {note.name}
           </span>
         </div>
 
         <div className="NotesList-item-controls">
-          <span style={{ cursor: 'pointer' }}>E</span> {/* */}
           <span 
             style={{ cursor: 'pointer' }}
-            onClick={this.handleRemove.bind(this, note.id)}>
+            onClick={this.props.onEdit}>
+
+            E
+          </span> {/* */}
+          <span 
+            style={{ cursor: 'pointer' }}
+            onClick={this.props.onRemove}>
 
             X
           </span>

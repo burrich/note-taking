@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-// import ReactModal from 'react-modal'
 import NotesListItem from './NotesListItem'; 
+import EditNoteModal from './EditNoteModal';
 
 import './styles/default.css';
 
@@ -12,10 +12,15 @@ class NotesList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { newNote: '' };
+    this.state = { 
+      newNote: '',
+      editedNote: null,
+      showModal: false
+    };
     
     this.handleAddNoteChange  = this.handleAddNoteChange.bind(this);
     this.handleAddNoteKeyDown = this.handleAddNoteKeyDown.bind(this);
+    this.handleCloseModal     = this.handleCloseModal.bind(this);
   }
 
   handleAddNoteChange(e) {
@@ -39,8 +44,29 @@ class NotesList extends Component {
     }
   }
 
+  handleOpenModal(note) {
+    this.setState({
+      editedNote: note,
+      showModal: true
+    });
+  }
+
+  handleCloseModal(e, submitName) {
+    if (submitName) {
+      const editedNote = this.state.editedNote;
+      this.props.onEditNote(editedNote.id, submitName);
+    }
+
+    this.setState({
+      editedNote: null,
+      showModal: false
+    });
+  }
+
   render() {
-    const newNote = this.state.newNote;
+    const newNote    = this.state.newNote;
+    const editedNote = this.state.editedNote;
+    const showModal  = this.state.showModal;
 
     const notes = this.props.notes;
     const notesListItems = notes.map((note, index) =>
@@ -48,7 +74,8 @@ class NotesList extends Component {
         key={note.id} 
         note={note}
         onSelect={this.props.onSelectNote.bind(this, index)}
-        onRemove={this.props.onRemoveNote} />
+        onEdit={this.handleOpenModal.bind(this, note)}
+        onRemove={this.props.onRemoveNote.bind(this, note.id)} />
     );
 
     return (
@@ -66,6 +93,11 @@ class NotesList extends Component {
         <div className="NotesList-content">
           {notesListItems}
         </div>
+
+        <EditNoteModal 
+          show={showModal}
+          onClose={this.handleCloseModal}
+          note={editedNote} />
       </div>
     );
   }
