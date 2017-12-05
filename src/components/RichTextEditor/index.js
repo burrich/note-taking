@@ -13,10 +13,9 @@ class RichTextEditor extends Component {
   constructor(props) {
     super(props);
 
-    const contentState = convertFromRaw(this.props.note);
-    const editorState = EditorState.createWithContent(contentState); 
+    const note = this.props.note;
+    const editorState = this.createContent(note);
     this.state = { editorState: editorState };
-    // this.state = { editorState: EditorState.createEmpty() };
 
     // this methods binding
     this.onChange          = this.onChange.bind(this);
@@ -31,6 +30,25 @@ class RichTextEditor extends Component {
   componentDidMount() {
     // this.focus();
     // this.save();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const nextNote = nextProps.note;
+    if (!nextNote) {
+      this.setState({ editorState: EditorState.createEmpty() });
+      return;
+    }
+
+    const note = this.props.note;
+    if (nextNote.id !== note.id) {
+      const editorState = this.createContent(nextNote);
+      this.setState({ editorState: editorState });
+    }
+  }
+
+  createContent(note) {
+    const contentState = convertFromRaw(note);
+    return EditorState.createWithContent(contentState); 
   }
 
   onChange(editorState) {  

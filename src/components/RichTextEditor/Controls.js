@@ -46,10 +46,10 @@ function Controls(props) {
                         editorStyle={blockStyle}
                         onToggle={toggleBlockStyle} />
 
-      <span className="RichEditor-styleButton"
+      {/*<span className="RichEditor-styleButton"
             onMouseDown={props.save}>
         Save
-      </span>
+      </span>*/}
     </div>
   );
 }

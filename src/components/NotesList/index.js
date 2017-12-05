@@ -18,8 +18,6 @@ class NotesList extends Component {
     //   selectedIndexNote: -1,
     //   showModal: false
     // };
-
-    // this methods binding
   }
 
   render() {
@@ -28,7 +26,8 @@ class NotesList extends Component {
     const notesListItems = notes.map((note) =>
       <NotesListItem 
         key={note.id} 
-        name={note.name} />
+        note={note}
+        onRemove={this.props.onRemoveNote} />
     );
 
     return (

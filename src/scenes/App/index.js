@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import RichTextEditor from '../../components/RichTextEditor';
 import NotesList from '../../components/NotesList';
 
@@ -8,26 +8,51 @@ import './styles/default.css';
  * App scene functionnal component.
  *
  */
-function App() {
-  return (
-    <div className="App">
-      <div className="header">
-        <h1>Note taking</h1>
-      </div>
-      
-      <div className="container-wrapper">
-        <div className="container">
-          <div className="container-left">
-            <NotesList notes={NOTES} />
-          </div>
+class App extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      notes: NOTES
+    };
 
-          <div className="container-right">
-            <RichTextEditor note={NOTES[0]} />
+    // this methods binding
+    this.handleRemoveNote = this.handleRemoveNote.bind(this);
+  }
+
+  handleRemoveNote(id) {
+    const notes = this.state.notes;
+    const updatedNotes = notes.filter(note => note.id !== id);
+
+    this.setState({ notes: updatedNotes });
+  }
+
+  render() {
+    const notes = this.state.notes;
+
+    return (
+      <div className="App">
+        <div className="header">
+          <h1>Note taking</h1>
+        </div>
+        
+        <div className="container-wrapper">
+          <div className="container">
+            <div className="container-left">
+              {/* TODO: pass only notes names */}
+              <NotesList 
+                notes={notes}
+                onRemoveNote={this.handleRemoveNote} />
+            </div>
+
+            <div className="container-right">
+              <RichTextEditor note={notes[0]} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 const NOTES = [
