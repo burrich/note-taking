@@ -11,17 +11,37 @@ import './styles/default.css';
 class NotesList extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   notes: ['Note 1', 'Note 2', 'Note 3', 'Note 4' ,'Note 5'],
-    //   newNote: '',
-    //   editNote: '',
-    //   selectedIndexNote: -1,
-    //   showModal: false
-    // };
+
+    this.state = { newNote: '' };
+    
+    this.handleAddNoteChange  = this.handleAddNoteChange.bind(this);
+    this.handleAddNoteKeyDown = this.handleAddNoteKeyDown.bind(this);
+  }
+
+  handleAddNoteChange(e) {
+    this.setState({ newNote: e.target.value })
+  }
+
+  handleAddNoteKeyDown(e) {
+    // TODO: declare key outside (util module)
+    const ENTER_KEY = 13;
+
+    if (e.keyCode !== ENTER_KEY) {
+      return;
+    }
+
+    e.preventDefault();
+    const newNote = this.state.newNote.trim();
+
+    if (newNote) {
+      this.props.onAddNote(newNote);
+      this.setState({ newNote: '' });
+    }
   }
 
   render() {
-    // const newNote = this.state.newNote;
+    const newNote = this.state.newNote;
+
     const notes = this.props.notes;
     const notesListItems = notes.map((note, index) =>
       <NotesListItem 
@@ -37,7 +57,10 @@ class NotesList extends Component {
           <input
             type="text"
             className="no-border"
-            placeholder="Add a note" />
+            placeholder="Add a note"
+            value={newNote}
+            onChange={this.handleAddNoteChange}
+            onKeyDown={this.handleAddNoteKeyDown} />
         </div>
 
         <div className="NotesList-content">

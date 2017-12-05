@@ -14,12 +14,46 @@ class App extends Component {
 
     this.state = {
       notes: NOTES,
+      idNoteCounter: NOTES.length,
       selectedNote: 0
     };
 
     // this methods binding
+    this.handleAddNote    = this.handleAddNote.bind(this);
     this.handleSelectNote = this.handleSelectNote.bind(this);
     this.handleRemoveNote = this.handleRemoveNote.bind(this);
+  }
+
+  handleAddNote(name) {
+    const updatedNotes  = this.state.notes;
+    const idNoteCounter = this.state.idNoteCounter + 1;
+
+    updatedNotes.push(
+      {
+        "id": idNoteCounter,
+        "name": name,
+        "entityMap": {},
+        "blocks": [
+          {
+            "key": "8i5rc",
+            "text": "",
+            "type": "unstyled",
+            "depth": 0,
+            "inlineStyleRanges": [],
+            "entityRanges": [],
+            "data": {}
+          }
+        ]
+      }
+    );
+
+    this.setState({ 
+      notes: updatedNotes, 
+      idNoteCounter: idNoteCounter,
+      selectedNote: updatedNotes.length - 1
+    })
+
+    // TODO: editor focus
   }
 
   handleSelectNote(index) {
@@ -29,8 +63,16 @@ class App extends Component {
   handleRemoveNote(id) {
     const notes = this.state.notes;
     const updatedNotes = notes.filter(note => note.id !== id);
+    
+    let selectedNote = this.state.selectedNote;
+    if (selectedNote !== 0) {
+      selectedNote--;
+    }
 
-    this.setState({ notes: updatedNotes });
+    this.setState({ 
+      notes: updatedNotes,
+      selectedNote: selectedNote
+    });
   }
 
   render() {
@@ -49,6 +91,7 @@ class App extends Component {
               {/* TODO: pass only notes names */}
               <NotesList 
                 notes={notes}
+                onAddNote={this.handleAddNote}
                 onSelectNote={this.handleSelectNote}
                 onRemoveNote={this.handleRemoveNote} />
             </div>

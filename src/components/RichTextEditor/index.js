@@ -40,7 +40,7 @@ class RichTextEditor extends Component {
     }
 
     const note = this.props.note;
-    if (nextNote.id !== note.id) {
+    if (!note || nextNote.id !== note.id) {
       const editorState = this.createContent(nextNote);
       this.setState({ editorState: editorState });
     }
