@@ -43,3 +43,7 @@ input[type=text].no-border {
   font-size: 1rem;
   line-height: 1.5;
 }
+
+.right {
+  float: right;
+}
