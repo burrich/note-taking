@@ -1,14 +1,29 @@
 # Note taking
 
-A **react** note taking app with **draft.js**
+A note taking app implementing **draft** RTE with **react**, **express** and **mongodb**.
 
 ## Setup
 
+Install dependencies :
 ```sh
 npm install
+```
+
+Start mongodb server :
+```sh
+mongod --dbpath path
+# path example : C:\MongoDB\data
+```
+
+Create database and collection :
+```sh
+mongo
+use noteTakingDB
+db.createCollection("notes")
 ```
 
 ## Features
 
 - display a rich text editor
+- list notes (static)
 - *coming...*

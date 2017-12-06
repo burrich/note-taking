@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ReactModal from 'react-modal'
+import NotesListItem from './NotesListItem'; 
+import EditNoteModal from './EditNoteModal';
 
 import './styles/default.css';
 
@@ -10,28 +11,24 @@ import './styles/default.css';
 class NotesList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      notes: ['Note 1', 'Note 2', 'Note 3', 'Note 4' ,'Note 5'],
+
+    this.state = { 
       newNote: '',
-      editNote: '',
-      selectedIndexNote: -1,
+      editedNote: null,
       showModal: false
     };
-
-    // this methods binding
-    this.handleNewNoteChange  = this.handleNewNoteChange.bind(this);
-    this.handleNewNoteKeyDown = this.handleNewNoteKeyDown.bind(this);
-    this.handleEditNoteSubmit = this.handleEditNoteSubmit.bind(this); 
-    this.handleEditNoteChange = this.handleEditNoteChange.bind(this); 
+    
+    this.handleAddNoteChange  = this.handleAddNoteChange.bind(this);
+    this.handleAddNoteKeyDown = this.handleAddNoteKeyDown.bind(this);
     this.handleCloseModal     = this.handleCloseModal.bind(this);
   }
 
-  handleNewNoteChange(e) {
-    this.setState({ newNote: e.target.value });
+  handleAddNoteChange(e) {
+    this.setState({ newNote: e.target.value })
   }
 
-  handleNewNoteKeyDown(e) {
-    // TODO: declare key outside
+  handleAddNoteKeyDown(e) {
+    // TODO: declare key outside (util module)
     const ENTER_KEY = 13;
 
     if (e.keyCode !== ENTER_KEY) {
@@ -42,118 +39,65 @@ class NotesList extends Component {
     const newNote = this.state.newNote.trim();
 
     if (newNote) {
-      let updateNotes = this.state.notes;
-      updateNotes.push(newNote);
-
-      this.setState({
-        notes: updateNotes,
-        newNote: ''
-      });
-
-      // TODO: editor focus
+      this.props.onAddNote(newNote);
+      this.setState({ newNote: '' });
     }
   }
 
-  handleRemoveNote(noteIndex) {
-    const notes = this.state.notes;
-    const updateNotes = notes.filter((note) => notes.indexOf(note) !== noteIndex);
-
-    this.setState({ notes: updateNotes });
-  }
-
-  handleEditNoteChange(e) {
-    this.setState({ editNote: e.target.value });
-  }
-
-  handleEditNoteSubmit(e) {
-    e.preventDefault();
-
-    const selectedIndexNote = this.state.selectedIndexNote;
-    const editNote          = this.state.editNote;
-    const updateNotes       = this.state.notes;
-    updateNotes[selectedIndexNote] = editNote;
-
-    this.setState({ notes: updateNotes });
-    this.handleCloseModal();
-  }
-
-  handleOpenModal(noteIndex) {
+  handleOpenModal(note) {
     this.setState({
-      selectedIndexNote: noteIndex,
-      editNote: this.state.notes[noteIndex],
+      editedNote: note,
       showModal: true
     });
-
-    // TODO: input focus
   }
-  
-  handleCloseModal() {
-    this.setState({ showModal: false });
 
-    // TODO: input focus
+  handleCloseModal(e, submitName) {
+    if (submitName) {
+      const editedNote = this.state.editedNote;
+      this.props.onEditNote(editedNote.id, submitName);
+    }
+
+    this.setState({
+      editedNote: null,
+      showModal: false
+    });
   }
 
   render() {
-    const newNote = this.state.newNote;
-    const notes = this.state.notes.map((note, index) =>
-      <div key={index} className="NotesList-item">
-        <div className="NotesList-item-value">
-          {note}
-        </div>
+    const newNote    = this.state.newNote;
+    const editedNote = this.state.editedNote;
+    const showModal  = this.state.showModal;
 
-        <div className="NotesList-item-controls">
-          <span onClick={this.handleOpenModal.bind(this, index)} style={{ cursor: 'pointer' }}>E</span> {/* */}
-          <span onClick={this.handleRemoveNote.bind(this, index)} style={{ cursor: 'pointer' }}>X</span>
-        </div>
-      </div>
+    const notes = this.props.notes;
+    const notesListItems = notes.map((note, index) =>
+      <NotesListItem 
+        key={note.id} 
+        note={note}
+        onSelect={this.props.onSelectNote.bind(this, index)}
+        onEdit={this.handleOpenModal.bind(this, note)}
+        onRemove={this.props.onRemoveNote.bind(this, note.id)} />
     );
 
     return (
       <div className="NotesList-root">
         <div className="NotesList-add">
-          <input 
+          <input
             type="text"
             className="no-border"
             placeholder="Add a note"
             value={newNote}
-            onKeyDown={this.handleNewNoteKeyDown}
-            onChange={this.handleNewNoteChange} />
+            onChange={this.handleAddNoteChange}
+            onKeyDown={this.handleAddNoteKeyDown} />
         </div>
 
         <div className="NotesList-content">
-          {notes}
+          {notesListItems}
         </div>
 
-        <ReactModal 
-          isOpen={this.state.showModal}
-          contentLabel="Minimal Modal Example"
-          onRequestClose={this.handleCloseModal}
-          style={{
-            overlay: {
-              zIndex: 1,
-            },
-            content: {
-              top: 10,
-              left: 10,
-              right: 'initial',
-              bottom: 'initial',
-              padding: 15,
-            }
-          }}>
-
-          <form onSubmit={this.handleEditNoteSubmit} className="form-inline">
-            <label for="note-name">Note name : </label>
-            <input
-              type="text"
-              id="note-name" 
-              value={this.state.editNote} 
-              onChange={this.handleEditNoteChange} /> {/* */}
-            <input
-              type="submit"
-              value="Update"
-              className="btn" />
-          </form>
-        </ReactModal>
+        <EditNoteModal 
+          show={showModal}
+          onClose={this.handleCloseModal}
+          note={editedNote} />
       </div>
     );
   }

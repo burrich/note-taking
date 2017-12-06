@@ -45,6 +45,11 @@ function Controls(props) {
       <BlockStyleButton name="ol"
                         editorStyle={blockStyle}
                         onToggle={toggleBlockStyle} />
+
+      <span className="RichEditor-styleButton right"
+            onMouseDown={props.onSave}>
+        Save
+      </span>
     </div>
   );
 }
