@@ -22,14 +22,13 @@ class RichTextEditor extends Component {
     this.onTab             = this.onTab.bind(this);
     this.focus             = this.focus.bind(this);
     this.handleKeyCommand  = this.handleKeyCommand.bind(this);
+    this.handleSave        = this.handleSave.bind(this);
     this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
     this.toggleBlockStyle  = this.toggleBlockStyle.bind(this);
-    this.save  = this.save.bind(this);
   }
 
   componentDidMount() {
     // this.focus();
-    // this.save();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -103,40 +102,15 @@ class RichTextEditor extends Component {
     };
   }
 
-  save() {
+  handleSave() {
     const editorState = this.state.editorState;
     const rawContent = convertToRaw(editorState.getCurrentContent());
-    console.log(rawContent);
-    // console.log(JSON.stringify(rawContent, null, 2));
-    const rawContentJson = JSON.stringify(rawContent);
-
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    
-    const init = {
-      method: 'POST',
-      mode: 'cors',
-      headers: headers,
-      body: rawContentJson
+    const updatedNote = { 
+      ...this.props.note, 
+      ...rawContent
     };
 
-    fetch('/api/notes', init)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Response failed');
-        }
-        console.log(res);
-        return res.json();
-      })
-      .then(data => {
-        if (!data || !data.ok || data.n !== 1) {
-          throw new Error('Unexpected json result : ' + JSON.stringify(data));
-        }
-        console.log('Response data : ', data);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    this.props.onSave(updatedNote);
   }
 
   render() {
@@ -155,7 +129,7 @@ class RichTextEditor extends Component {
       <div className="RichEditor-root">
         <Controls currentStyle={currentStyle}
                   toggleStyle={toggleStyle}
-                  save={this.save} />
+                  onSave={this.handleSave} />
 
         <div className="RichEditor-editor" onClick={this.focus}>
           <Editor editorState={editorState}

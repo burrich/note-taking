@@ -23,6 +23,7 @@ class App extends Component {
     this.handleSelectNote = this.handleSelectNote.bind(this);
     this.handleEditNote   = this.handleEditNote.bind(this);
     this.handleRemoveNote = this.handleRemoveNote.bind(this);
+    this.handleSaveNote   = this.handleSaveNote.bind(this);
   }
 
   handleAddNote(name) {
@@ -84,6 +85,14 @@ class App extends Component {
     });
   }
 
+  handleSaveNote(note) {
+    const updatedNotes = this.state.notes.slice();
+    const index = updatedNotes.findIndex(elt => elt.id === note.id);
+
+    updatedNotes[index] = note;
+    this.setState({ notes: updatedNotes })
+  }
+
   render() {
     const notes        = this.state.notes;
     const selectedNote = this.state.selectedNote;
@@ -107,7 +116,9 @@ class App extends Component {
             </div>
 
             <div className="container-right">
-              <RichTextEditor note={notes[selectedNote]} />
+              <RichTextEditor
+                note={notes[selectedNote]}
+                onSave={this.handleSaveNote} />
             </div>
           </div>
         </div>
