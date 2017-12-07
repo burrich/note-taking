@@ -5,6 +5,7 @@ const ObjectId   = require('mongodb').ObjectId;
 
 /*
  * Express server serving a restful api with mongodb.
+ * TODO: check body
  * TODO: unit tests
  */
 
@@ -33,7 +34,7 @@ router.get('/notes', (req, res, next) => {
   notes.find().toArray((err, results) => {
     if (err) return next(err);
 
-    console.log('READ :', results.result);
+    console.log('READ :', JSON.stringify(results, null, 2));
     res.json(results);
   });
 });
@@ -46,7 +47,7 @@ router.get('/notes/:noteId', (req, res, next) => {
   notes.findOne({ _id: objectId }, (err, result) => {
     if (err) return next(err);
 
-    console.log('READ :', result.result);
+    console.log('READ :', JSON.stringify(result, null, 2));
     res.json(result);
   });
 });
@@ -64,19 +65,19 @@ router.post('/notes', (req, res, next) => {
   notes.insertOne(note, (err, result) => {
     if (err) return next(err);
 
+    result.result.id = result.insertedId;
     console.log('CREATE', result.result);
-    res.json(result);
+    res.json(result); 
   });
 });
 
 // Update
-// TODO: patch case if necessary
-router.put('/notes/:noteId', (req, res, next) => {
+router.patch('/notes/:noteId', (req, res, next) => {
   const objectId = new ObjectId(req.params.noteId);
-  const note = req.body;
+  const noteAttr = req.body;
   const notes = db.collection('notes');
 
-  notes.updateOne({ _id: objectId }, note, (err, result) => {
+  notes.updateOne({ _id: objectId }, { $set: noteAttr }, (err, result) => {
     if (err) return next(err);
 
     console.log('UPDATE :', result.result);
