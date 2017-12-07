@@ -22,6 +22,10 @@
   /*border: 1px solid grey;*/
 }
 
+.RichEditor-editor-disabled {
+  cursor: default;
+}
+
 .DraftEditor-root {
   flex-grow: 1;
 

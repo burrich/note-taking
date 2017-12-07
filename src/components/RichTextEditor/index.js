@@ -8,6 +8,7 @@ import './styles/default.css';
 
 /**
  * RichTextEditor component implementating draft.js RTE editor.
+ * TODO: reafacto contructor, willReceive and createContent
  */
 class RichTextEditor extends Component {
   constructor(props) {
@@ -39,13 +40,17 @@ class RichTextEditor extends Component {
     }
 
     const note = this.props.note;
-    if (!note || nextNote.id !== note.id) {
+    if (!note || nextNote._id !== note._id) {
       const editorState = this.createContent(nextNote);
       this.setState({ editorState: editorState });
     }
   }
 
   createContent(note) {
+    if (!note) {
+      return EditorState.createEmpty();
+    }
+
     const contentState = convertFromRaw(note);
     return EditorState.createWithContent(contentState); 
   }
@@ -121,9 +126,10 @@ class RichTextEditor extends Component {
       block: this.toggleBlockStyle,
     };
 
-    // if (!editorState) {
-    //   return <div>LOADING...</div>;
-    // }
+    // TODO: state
+    const readOnly = this.props.note ? false : true;
+    let editorWrapperClass = 'RichEditor-editor';
+    editorWrapperClass += !this.props.note ? ' RichEditor-editor-disabled' : '';
 
     return (
       <div className="RichEditor-root">
@@ -131,13 +137,14 @@ class RichTextEditor extends Component {
                   toggleStyle={toggleStyle}
                   onSave={this.handleSave} />
 
-        <div className="RichEditor-editor" onClick={this.focus}>
+        <div className={editorWrapperClass} onClick={this.focus}>
           <Editor editorState={editorState}
                   onChange={this.onChange}
                   handleKeyCommand={this.handleKeyCommand}
                   onTab={this.onTab}
                   blockStyleFn={getBlockStyle}
                   spellCheck={true}
+                  readOnly={readOnly}
                   ref={el => this.domEditor = el} />
                   {/*plugins={[]} />*/}
         </div>
