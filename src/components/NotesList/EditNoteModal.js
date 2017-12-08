@@ -46,7 +46,7 @@ class EditNoteModal extends Component {
             type="text"
             id="note-name" 
             value={this.state.inputName} 
-            onChange={this.handleInputNameChange} />
+            onChange={this.handleInputNameChange} /> {/**/}
           <input
             type="submit"
             value="Update"

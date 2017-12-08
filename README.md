@@ -15,15 +15,20 @@ mongod --dbpath path
 # path example : C:\MongoDB\data
 ```
 
-Create database and collection :
+Create database and insert data :
 ```sh
 mongo
 use noteTakingDB
 db.createCollection("notes")
 ```
 
+```sh
+npm install pow-mongodb-fixtures -g
+mongofixtures noteTakingDB fixtures.js
+```
+
 ## Features
 
 - display a rich text editor
-- list notes (static)
+- list notes
 - *coming...*

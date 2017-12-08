@@ -54,7 +54,7 @@ class NotesList extends Component {
   handleCloseModal(e, submitName) {
     if (submitName) {
       const editedNote = this.state.editedNote;
-      this.props.onEditNote(editedNote.id, submitName);
+      this.props.onEditNote(editedNote._id, submitName);
     }
 
     this.setState({
@@ -71,11 +71,11 @@ class NotesList extends Component {
     const notes = this.props.notes;
     const notesListItems = notes.map((note, index) =>
       <NotesListItem 
-        key={note.id} 
+        key={note._id}
         note={note}
         onSelect={this.props.onSelectNote.bind(this, index)}
         onEdit={this.handleOpenModal.bind(this, note)}
-        onRemove={this.props.onRemoveNote.bind(this, note.id)} />
+        onRemove={this.props.onRemoveNote.bind(this, note._id)} />
     );
 
     return (

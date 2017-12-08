@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import RichTextEditor from '../../components/RichTextEditor';
 import NotesList from '../../components/NotesList';
 
+import { getNotes, createNote, updateNote, deleteNote } from '../../services/api';
+
 import './styles/default.css';
 
 /**
@@ -12,11 +14,18 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      notes: NOTES,
-      idNoteCounter: NOTES.length,
-      selectedNote: 0
-    };
+    this.state = {};
+
+    getNotes((err, notes) => {
+      if (err) return console.error(err);
+      
+      console.log(notes);
+
+      this.setState({
+        notes: notes,
+        selectedNote: 0
+      });
+    });
 
     // this methods binding
     this.handleAddNote    = this.handleAddNote.bind(this);
@@ -27,33 +36,39 @@ class App extends Component {
   }
 
   handleAddNote(name) {
-    const updatedNotes  = this.state.notes;
-    const idNoteCounter = this.state.idNoteCounter + 1;
+    // TODO: define newNote in RTE
+    const newNote = {
+      "name": name,
+      "entityMap": {},
+      "blocks": [
+        {
+          "key": "8i5rc",
+          "text": "",
+          "type": "unstyled",
+          "depth": 0,
+          "inlineStyleRanges": [],
+          "entityRanges": [],
+          "data": {}
+        }
+      ]
+    }
+    const newNoteToJson = JSON.stringify(newNote);
 
-    updatedNotes.push(
-      {
-        "id": idNoteCounter,
-        "name": name,
-        "entityMap": {},
-        "blocks": [
-          {
-            "key": "8i5rc",
-            "text": "",
-            "type": "unstyled",
-            "depth": 0,
-            "inlineStyleRanges": [],
-            "entityRanges": [],
-            "data": {}
-          }
-        ]
-      }
-    );
+    createNote(newNoteToJson, (err, result) => {
+      if (err) return console.error(err);
 
-    this.setState({ 
-      notes: updatedNotes, 
-      idNoteCounter: idNoteCounter,
-      selectedNote: updatedNotes.length - 1
-    })
+      console.log(result);
+
+      // Update state with inserted id
+      const updatedNotes = this.state.notes.slice();
+      newNote._id = result.id;
+      updatedNotes.push(newNote);
+
+      this.setState({
+        notes: updatedNotes,
+        selectedNote: updatedNotes.length - 1
+      });
+    });
 
     // TODO: editor focus
   }
@@ -63,40 +78,74 @@ class App extends Component {
   }
 
   handleEditNote(id, name) {
-    // swallow copy for immutability
-    const updatedNotes = this.state.notes.slice();
-    updatedNotes.find(elt => elt.id === id).name = name;
+    const nameToJson = JSON.stringify({ name: name });
 
-    this.setState({ notes: updatedNotes });
+    updateNote(id, nameToJson, (err, result) => {
+      if (err) return console.error(err);
+
+      console.log(result);
+
+      // Update state
+      const updatedNotes = this.state.notes.slice();
+      updatedNotes.find(elt => elt._id === id).name = name;
+
+      this.setState({ notes: updatedNotes });
+    });
   }
 
   handleRemoveNote(id) {
-    const notes = this.state.notes;
-    const updatedNotes = notes.filter(note => note.id !== id);
-    
-    let selectedNote = this.state.selectedNote;
-    if (selectedNote !== 0) {
-      selectedNote--;
-    }
+    deleteNote(id, (err, result) => {
+      if (err) return console.error(err);
 
-    this.setState({ 
-      notes: updatedNotes,
-      selectedNote: selectedNote
+      console.log(result);
+
+      // Update state
+      // TODO: log immutability !!!
+      const notes = this.state.notes;
+      const updatedNotes = notes.filter(note => note._id !== id);
+      
+      let selectedNote = this.state.selectedNote;
+      if (selectedNote !== 0) {
+        selectedNote--;
+      }
+
+      this.setState({ 
+        notes: updatedNotes,
+        selectedNote: selectedNote
+      });
     });
   }
 
   handleSaveNote(note) {
-    const updatedNotes = this.state.notes.slice();
-    const index = updatedNotes.findIndex(elt => elt.id === note.id);
+    const id = note._id;
+    const rteAttrToJson = JSON.stringify({
+      entityMap: note.entityMap,
+      blocks: note.blocks
+    });
 
-    updatedNotes[index] = note;
-    this.setState({ notes: updatedNotes })
+    updateNote(id, rteAttrToJson, (err, result) => {
+      if (err) return console.error(err);
+
+      console.log(result);
+
+      // Update state
+      const updatedNotes = this.state.notes.slice();
+      const index = updatedNotes.findIndex(elt => elt._id === id);
+
+      updatedNotes[index] = note;
+      this.setState({ notes: updatedNotes });
+    });
   }
 
   render() {
-    const notes        = this.state.notes;
-    const selectedNote = this.state.selectedNote;
+    const notes = this.state.notes;
+    if (!notes) {
+      return (
+        <div>Loadings notes...</div>
+      );
+    }
 
+    const selectedNote = this.state.selectedNote;
     return (
       <div className="App">
         <div className="header">
@@ -126,77 +175,5 @@ class App extends Component {
     );
   }
 }
-
-const NOTES = [
-  {
-    "id": 1,
-    "name": "Note 1",
-    "entityMap": {},
-    "blocks": [
-      {
-        "key": "8i5rc",
-        "text": "hello world !",
-        "type": "blockquote",
-        "depth": 0,
-        "inlineStyleRanges": [
-          {
-            "offset": 0,
-            "length": 13,
-            "style": "ITALIC"
-          }
-        ],
-        "entityRanges": [],
-        "data": {}
-      },
-      {
-        "key": "8kjpt",
-        "text": "By Burrich ",
-        "type": "unstyled",
-        "depth": 0,
-        "inlineStyleRanges": [
-          {
-            "offset": 3,
-            "length": 7,
-            "style": "BOLD"
-          }
-        ],
-        "entityRanges": [],
-        "data": {}
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "name": "Note 2",
-    "entityMap": {},
-    "blocks": [
-      {
-        "key": "5atf5",
-        "text": "foo",
-        "type": "unstyled",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [],
-        "data": {}
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "name": "Note 3",
-    "entityMap": {},
-    "blocks": [
-      {
-        "key": "5atf5",
-        "text": "bar",
-        "type": "unstyled",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [],
-        "data": {}
-      }
-    ]
-  },
-];
 
 export default App;
