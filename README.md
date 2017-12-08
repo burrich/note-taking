@@ -30,5 +30,5 @@ mongofixtures noteTakingDB fixtures.js
 ## Features
 
 - display a rich text editor
-- list notes (static)
+- list notes
 - *coming...*
