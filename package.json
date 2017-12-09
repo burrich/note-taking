@@ -1,7 +1,9 @@
 {
   "name": "note-taking",
+  "description:": "A note taking app with draft.js",
   "version": "0.1.0",
   "private": true,
+  "main": "index.js",
   "proxy": "http://localhost:3001",
   "scripts": {
     "start": "react-scripts start",
