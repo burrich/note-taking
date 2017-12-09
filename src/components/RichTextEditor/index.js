@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
 // import Editor from 'draft-js-plugins-editor';
+import _ from 'lodash';
 import Controls from './Controls';
 
 import '../../../node_modules/draft-js/dist/Draft.css'; // TODO: move file outside node_modules
@@ -23,7 +24,6 @@ class RichTextEditor extends Component {
     this.onTab             = this.onTab.bind(this);
     this.focus             = this.focus.bind(this);
     this.handleKeyCommand  = this.handleKeyCommand.bind(this);
-    this.handleSave        = this.handleSave.bind(this);
     this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
     this.toggleBlockStyle  = this.toggleBlockStyle.bind(this);
   }
@@ -45,6 +45,32 @@ class RichTextEditor extends Component {
       this.setState({ editorState: editorState });
     }
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    this.handleAutoSave(prevProps, prevState);    
+  }
+
+  handleAutoSave(prevProps, prevState) {
+    const previousRawContent = convertToRaw(prevState.editorState.getCurrentContent());
+    const currentRawContent  = convertToRaw(this.state.editorState.getCurrentContent());
+
+    const currentNote = this.props.note;
+    const isContentUpdated = !_.isEqual(previousRawContent, currentRawContent);
+    const hasNoteChanged = (currentNote !== prevProps.note) ? true : false;
+
+    if (isContentUpdated && !hasNoteChanged) {
+      const updatedNote = {
+        ...currentNote,
+        ...currentRawContent
+      }
+      this.onUpdateContent(updatedNote);
+    }
+  }
+
+  // TODO: better way to define the debounce method
+  onUpdateContent = _.debounce((updatedNote) => {
+    this.props.onSave(updatedNote);
+  }, 1000);
 
   createContent(note) {
     if (!note) {
@@ -107,17 +133,6 @@ class RichTextEditor extends Component {
     };
   }
 
-  handleSave() {
-    const editorState = this.state.editorState;
-    const rawContent = convertToRaw(editorState.getCurrentContent());
-    const updatedNote = { 
-      ...this.props.note, 
-      ...rawContent
-    };
-
-    this.props.onSave(updatedNote);
-  }
-
   render() {
     const editorState = this.state.editorState;
     const currentStyle = this.getCurrentStyle();
@@ -134,8 +149,7 @@ class RichTextEditor extends Component {
     return (
       <div className="RichEditor-root">
         <Controls currentStyle={currentStyle}
-                  toggleStyle={toggleStyle}
-                  onSave={this.handleSave} />
+                  toggleStyle={toggleStyle} />
 
         <div className={editorWrapperClass} onClick={this.focus}>
           <Editor editorState={editorState}
