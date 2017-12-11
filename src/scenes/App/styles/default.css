@@ -7,10 +7,6 @@
   margin: 0 auto;
 }
 
-.App h1 {
-  text-align: center;
-}
-
 .container-wrapper {
   flex-grow: 1;
 

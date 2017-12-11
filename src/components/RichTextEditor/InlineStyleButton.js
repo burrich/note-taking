@@ -1,8 +1,6 @@
 import React from 'react';
 import StyleButton from './StyleButton';
 
-import './styles/style-button.css';
-
 /**
  * InlineStyleButton component.
  */
@@ -11,28 +9,29 @@ function InlineStyleButton(props) {
   const active = props.editorStyle.has(style.code);
   
   return (
-    <StyleButton style={style}
-                 active={active}
-                 onToggle={props.onToggle} />
+    <StyleButton 
+      style={style}
+      active={active}
+      onToggle={props.onToggle} />
   );
 }
 
 const styles = {
   bold: {
     code: 'BOLD',
-    label: 'Bold'
+    name: 'bold'
   },
   italic: {
     code: 'ITALIC',
-    label: 'Italic'
+    name: 'italic'
   },
   underline: {
     code: 'UNDERLINE',
-    label: 'Underline'
+    name: 'underline'
   },
   strikethrough: {
     code: 'STRIKETHROUGH',
-    label: 'Strikethrough'
+    name: 'strikethrough'
   },
 }
 

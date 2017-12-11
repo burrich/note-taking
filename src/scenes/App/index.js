@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Header } from 'semantic-ui-react';
 import RichTextEditor from '../../components/RichTextEditor';
 import NotesList from '../../components/NotesList';
 
@@ -149,9 +150,12 @@ class App extends Component {
     return (
       <div className="App">
         <div className="header">
-          <h1>Note taking</h1>
+          <Header
+            as="h1"
+            content="Note taking"
+            textAlign="center" />
         </div>
-        
+
         <div className="container-wrapper">
           <div className="container">
             <div className="container-left">

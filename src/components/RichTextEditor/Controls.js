@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'semantic-ui-react';
 import InlineStyleButton from './InlineStyleButton';
 import BlockStyleButton from './BlockStyleButton';
 
@@ -14,37 +15,53 @@ function Controls(props) {
 
   return (
     <div className="RichEditor-controls">
-      <InlineStyleButton name="bold"
-                         editorStyle={inlineStyle}
-                         onToggle={toggleInlineStyle} />
+      <Button.Group>
 
-      <InlineStyleButton name="italic"
-                         editorStyle={inlineStyle}
-                         onToggle={toggleInlineStyle} />
+        <InlineStyleButton 
+          name="bold"
+          editorStyle={inlineStyle}
+          onToggle={toggleInlineStyle} />
 
-      <InlineStyleButton name="underline"
-                         editorStyle={inlineStyle}
-                         onToggle={toggleInlineStyle} />
+        <InlineStyleButton 
+          name="italic"
+          editorStyle={inlineStyle}
+          onToggle={toggleInlineStyle} />
 
-      <InlineStyleButton name="strikethrough"
-                         editorStyle={inlineStyle}
-                         onToggle={toggleInlineStyle} />
+        <InlineStyleButton 
+          name="underline"
+          editorStyle={inlineStyle}
+          onToggle={toggleInlineStyle} />
 
-      <BlockStyleButton name="quotes"
-                        editorStyle={blockStyle}
-                        onToggle={toggleBlockStyle} />
+        <InlineStyleButton 
+          name="strikethrough"
+          editorStyle={inlineStyle}
+          onToggle={toggleInlineStyle} />
+      </Button.Group>
 
-      <BlockStyleButton name="code"
-                        editorStyle={blockStyle}
-                        onToggle={toggleBlockStyle} />
+      {' '}
+      
+      <Button.Group>
+        <BlockStyleButton 
+          name="quotes"
+          editorStyle={blockStyle}
+          onToggle={toggleBlockStyle} />
 
-      <BlockStyleButton name="ul"
-                        editorStyle={blockStyle}
-                        onToggle={toggleBlockStyle} />
+        <BlockStyleButton 
+          name="code"
+          editorStyle={blockStyle}
+          onToggle={toggleBlockStyle} />
 
-      <BlockStyleButton name="ol"
-                        editorStyle={blockStyle}
-                        onToggle={toggleBlockStyle} />
+        <BlockStyleButton 
+          name="ul"
+          editorStyle={blockStyle}
+          onToggle={toggleBlockStyle} />
+
+        <BlockStyleButton 
+          name="ol"
+          editorStyle={blockStyle}
+          onToggle={toggleBlockStyle} />
+
+      </Button.Group>
     </div>
   );
 }
