@@ -69,14 +69,17 @@ class NotesList extends Component {
     const showModal  = this.state.showModal;
 
     const notes = this.props.notes;
-    const notesListItems = notes.map((note, index) =>
-      <NotesListItem 
+    const notesListItems = notes.map((note, index) => {
+      const selected = (index === this.props.selectedNote) ? true : false;
+
+      return <NotesListItem 
         key={note._id}
         note={note}
+        selected={selected}
         onSelect={this.props.onSelectNote.bind(this, index)}
         onEdit={this.handleOpenModal.bind(this, note)}
         onRemove={this.props.onRemoveNote.bind(this, note._id)} />
-    );
+    });
 
     return (
       <div className="NotesList-root">

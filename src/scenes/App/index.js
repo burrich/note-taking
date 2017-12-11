@@ -158,6 +158,7 @@ class App extends Component {
               {/* TODO: pass only notes names */}
               <NotesList 
                 notes={notes}
+                selectedNote={selectedNote}
                 onAddNote={this.handleAddNote}
                 onSelectNote={this.handleSelectNote}
                 onEditNote={this.handleEditNote}

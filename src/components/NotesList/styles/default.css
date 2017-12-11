@@ -9,6 +9,14 @@
   margin-top: 10px;
 }
 
+.NotesList-item span {
+  cursor: pointer;
+}
+
+.NotesList-item-selected {
+  font-weight: 600;
+}
+
 .ReactModal__Content p {
   margin-top: 0;
 }
