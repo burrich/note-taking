@@ -1,37 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { List, Icon } from 'semantic-ui-react';
 
 /**
  * NotesListItem component.
  */
-class NotesListItem extends Component {
-  constructor(props) {
-    super(props);
-  }
+function NotesListItem(props) {
+  return (
+    <List.Item as="a" active={props.selected}>
+      <List.Content floated='right'>
+        <Icon link name="write" onClick={props.onEdit} />
+        <Icon link name="remove" onClick={props.onRemove} />
+      </List.Content>
 
-  render() {
-    const note = this.props.note;
-    let listItemClass = 'NotesList-item-value';
-    listItemClass = this.props.selected ? ' NotesList-item-selected' : ''; 
-
-    return (
-      <div className="NotesList-item">
-        <div className={listItemClass}>
-          <span onClick={this.props.onSelect}>
-            {note.name}
-          </span>
-        </div>
-
-        <div className="NotesList-item-controls">
-          <span onClick={this.props.onEdit}>
-            E
-          </span> {/* */}
-          <span onClick={this.props.onRemove}>
-            X
-          </span>
-        </div>
-      </div>
-    );
-  }
+      <List.Content onClick={props.onSelect}>
+        {props.note.name}
+      </List.Content>
+    </List.Item>
+  );
 }
 
 export default NotesListItem;

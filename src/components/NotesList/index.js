@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { List } from 'semantic-ui-react';
 import NotesListItem from './NotesListItem'; 
 import EditNoteModal from './EditNoteModal';
 
@@ -93,9 +94,9 @@ class NotesList extends Component {
             onKeyDown={this.handleAddNoteKeyDown} />
         </div>
 
-        <div className="NotesList-content">
+        <List link>
           {notesListItems}
-        </div>
+        </List>
 
         <EditNoteModal 
           show={showModal}
