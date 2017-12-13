@@ -47,28 +47,24 @@ class NotesList extends Component {
 
   handleOpenModal(note) {
     this.setState({
-      editedNote: note,
-      showModal: true
+      showModal: true,
+      editedNote: note
     });
   }
 
-  handleCloseModal(e, submitName) {
+  handleCloseModal(e, data, submitName) {
     if (submitName) {
       const editedNote = this.state.editedNote;
       this.props.onEditNote(editedNote._id, submitName);
     }
 
     this.setState({
-      editedNote: null,
-      showModal: false
+      showModal: false,
+      editedNote: null
     });
   }
 
   render() {
-    const newNote    = this.state.newNote;
-    const editedNote = this.state.editedNote;
-    const showModal  = this.state.showModal;
-
     const notes = this.props.notes;
     const notesListItems = notes.map((note, index) => {
       const selected = (index === this.props.selectedNote) ? true : false;
@@ -80,7 +76,7 @@ class NotesList extends Component {
         onSelect={this.props.onSelectNote.bind(this, index)}
         onEdit={this.handleOpenModal.bind(this, note)}
         onRemove={this.props.onRemoveNote.bind(this, note._id)} />
-    });
+    }); 
 
     return (
       <div className="NotesList-root">
@@ -89,7 +85,7 @@ class NotesList extends Component {
             type="text"
             className="no-border"
             placeholder="Add a note"
-            value={newNote}
+            value={this.state.newNote}
             onChange={this.handleAddNoteChange}
             onKeyDown={this.handleAddNoteKeyDown} />
         </div>
@@ -98,10 +94,10 @@ class NotesList extends Component {
           {notesListItems}
         </List>
 
-        <EditNoteModal 
-          show={showModal}
-          onClose={this.handleCloseModal}
-          note={editedNote} />
+        <EditNoteModal
+          note={this.state.editedNote}
+          open={this.state.showModal}
+          onClose={this.handleCloseModal} />
       </div>
     );
   }

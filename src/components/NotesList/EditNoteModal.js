@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Modal from '../Modal'
+import { Icon, Modal, Form, Input, Button } from 'semantic-ui-react';
 
 /**
- * Modal for editing notes implementing Modal component.
+ * Modal for editing notes implementing Semantic UI Modal component.
  */
 class EditNoteModal extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class EditNoteModal extends Component {
     e.preventDefault();
 
     const submitName = this.state.inputName;
-    this.props.onClose(e, submitName);
+    this.props.onClose(e, null, submitName);
   }
 
   handleInputNameChange(e) {
@@ -36,32 +36,43 @@ class EditNoteModal extends Component {
 
   render() {
     const note = this.props.note;
-    let form = null;
+    let editForm = null;
 
     if (note) {
-      form = (
-        <form onSubmit={this.handleFormSubmit} className="form-inline">
-          <label htmlFor="note-name">Note name : </label>
-          <input
-            type="text"
-            id="note-name" 
-            value={this.state.inputName} 
-            onChange={this.handleInputNameChange} /> {/**/}
-          <input
-            type="submit"
-            value="Update"
-            className="btn"
-            style={{ cursor: 'pointer' }} />
-        </form>
+      editForm = (
+        <Form>
+          <Form.Field inline>
+            <label>Name : </label>
+            <Input 
+              value={this.state.inputName}
+              onChange={this.handleInputNameChange} />
+          </Form.Field>
+        </Form>
       );
     }
 
     return (
-      <Modal 
-        show={this.props.show}
-        onClose={this.props.onClose}>
-        
-        {form}
+      <Modal
+        open={this.props.open}
+        onClose={this.props.onClose}
+        size="mini">
+
+        <Modal.Header>Update note name</Modal.Header>
+
+        <Modal.Content>
+          <Modal.Description>{editForm}</Modal.Description>
+        </Modal.Content>
+
+        <Modal.Actions>
+          <Button 
+            content="Cancel"
+            onClick={this.props.onClose} />
+
+          <Button 
+            content="Submit"
+            onClick={this.handleFormSubmit}
+            positive />
+        </Modal.Actions>
       </Modal>
     );
   }
