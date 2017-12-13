@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List } from 'semantic-ui-react';
+import { List, Input } from 'semantic-ui-react';
 import NotesListItem from './NotesListItem'; 
 import EditNoteModal from './EditNoteModal';
 
@@ -19,26 +19,23 @@ class NotesList extends Component {
       showModal: false
     };
     
-    this.handleAddNoteChange  = this.handleAddNoteChange.bind(this);
-    this.handleAddNoteKeyDown = this.handleAddNoteKeyDown.bind(this);
-    this.handleCloseModal     = this.handleCloseModal.bind(this);
+    this.handleAddNoteChange = this.handleAddNoteChange.bind(this);
+    this.handleAddNote       = this.handleAddNote.bind(this);
+    this.handleCloseModal    = this.handleCloseModal.bind(this);
   }
 
   handleAddNoteChange(e) {
     this.setState({ newNote: e.target.value })
   }
 
-  handleAddNoteKeyDown(e) {
+  handleAddNote(e) {
     // TODO: declare key outside (util module)
     const ENTER_KEY = 13;
-
-    if (e.keyCode !== ENTER_KEY) {
-      return;
+    if (e.type === 'keydown' && e.keyCode !== ENTER_KEY) {
+        return;
     }
 
-    e.preventDefault();
     const newNote = this.state.newNote.trim();
-
     if (newNote) {
       this.props.onAddNote(newNote);
       this.setState({ newNote: '' });
@@ -81,13 +78,12 @@ class NotesList extends Component {
     return (
       <div className="NotesList-root">
         <div className="NotesList-add">
-          <input
-            type="text"
-            className="no-border"
+          <Input
+            action={{ icon: 'add', onClick: this.handleAddNote }}
             placeholder="Add a note"
             value={this.state.newNote}
             onChange={this.handleAddNoteChange}
-            onKeyDown={this.handleAddNoteKeyDown} />
+            onKeyDown={this.handleAddNote} />
         </div>
 
         <List link>
