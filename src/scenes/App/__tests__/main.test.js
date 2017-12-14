@@ -1,9 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme'
 import App from '../';
-import RichTextEditor from '../../../components/RichTextEditor';
 
-test('find one RichTextEditor', () => {
+jest.mock('../../../services/api');
+
+test('App renders correctly with notes', () => {
   const app = shallow(<App />);
-  expect(app.find(RichTextEditor)).toHaveLength(1);
+  expect(app).toMatchSnapshot();
 });

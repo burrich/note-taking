@@ -1,0 +1,193 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App renders correctly with notes 1`] = `
+<div
+  className="App"
+>
+  <div
+    className="header"
+  >
+    <Header
+      as="h1"
+      content="Note taking"
+      textAlign="center"
+    />
+  </div>
+  <div
+    className="container-wrapper"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="container-left"
+      >
+        <NotesList
+          notes={
+            Array [
+              Object {
+                "blocks": Array [
+                  Object {
+                    "data": Object {},
+                    "depth": 0,
+                    "entityRanges": Array [],
+                    "inlineStyleRanges": Array [
+                      Object {
+                        "length": 24,
+                        "offset": 0,
+                        "style": "BOLD",
+                      },
+                    ],
+                    "key": "8i5rc",
+                    "text": "Welcome to Note taking !",
+                    "type": "unstyled",
+                  },
+                  Object {
+                    "data": Object {},
+                    "depth": 0,
+                    "entityRanges": Array [],
+                    "inlineStyleRanges": Array [],
+                    "key": "a392a",
+                    "text": "",
+                    "type": "unstyled",
+                  },
+                  Object {
+                    "data": Object {},
+                    "depth": 0,
+                    "entityRanges": Array [],
+                    "inlineStyleRanges": Array [],
+                    "key": "899no",
+                    "text": "You are free to create your note, please enjoy ;)",
+                    "type": "unstyled",
+                  },
+                  Object {
+                    "data": Object {},
+                    "depth": 0,
+                    "entityRanges": Array [],
+                    "inlineStyleRanges": Array [],
+                    "key": "dd4je",
+                    "text": "",
+                    "type": "unstyled",
+                  },
+                  Object {
+                    "data": Object {},
+                    "depth": 0,
+                    "entityRanges": Array [],
+                    "inlineStyleRanges": Array [],
+                    "key": "au5j1",
+                    "text": "Burrich",
+                    "type": "unstyled",
+                  },
+                ],
+                "entityMap": Object {},
+                "name": "Welcome",
+              },
+              Object {
+                "blocks": Array [
+                  Object {
+                    "data": Object {},
+                    "depth": 0,
+                    "entityRanges": Array [],
+                    "inlineStyleRanges": Array [],
+                    "key": "5atf5",
+                    "text": "foo",
+                    "type": "unstyled",
+                  },
+                ],
+                "entityMap": Object {},
+                "name": "Note 1",
+              },
+              Object {
+                "blocks": Array [
+                  Object {
+                    "data": Object {},
+                    "depth": 0,
+                    "entityRanges": Array [],
+                    "inlineStyleRanges": Array [],
+                    "key": "5atf5",
+                    "text": "bar",
+                    "type": "unstyled",
+                  },
+                ],
+                "entityMap": Object {},
+                "name": "Note 2",
+              },
+            ]
+          }
+          onAddNote={[Function]}
+          onEditNote={[Function]}
+          onRemoveNote={[Function]}
+          onSelectNote={[Function]}
+          selectedNote={0}
+        />
+      </div>
+      <div
+        className="container-right"
+      >
+        <RichTextEditor
+          note={
+            Object {
+              "blocks": Array [
+                Object {
+                  "data": Object {},
+                  "depth": 0,
+                  "entityRanges": Array [],
+                  "inlineStyleRanges": Array [
+                    Object {
+                      "length": 24,
+                      "offset": 0,
+                      "style": "BOLD",
+                    },
+                  ],
+                  "key": "8i5rc",
+                  "text": "Welcome to Note taking !",
+                  "type": "unstyled",
+                },
+                Object {
+                  "data": Object {},
+                  "depth": 0,
+                  "entityRanges": Array [],
+                  "inlineStyleRanges": Array [],
+                  "key": "a392a",
+                  "text": "",
+                  "type": "unstyled",
+                },
+                Object {
+                  "data": Object {},
+                  "depth": 0,
+                  "entityRanges": Array [],
+                  "inlineStyleRanges": Array [],
+                  "key": "899no",
+                  "text": "You are free to create your note, please enjoy ;)",
+                  "type": "unstyled",
+                },
+                Object {
+                  "data": Object {},
+                  "depth": 0,
+                  "entityRanges": Array [],
+                  "inlineStyleRanges": Array [],
+                  "key": "dd4je",
+                  "text": "",
+                  "type": "unstyled",
+                },
+                Object {
+                  "data": Object {},
+                  "depth": 0,
+                  "entityRanges": Array [],
+                  "inlineStyleRanges": Array [],
+                  "key": "au5j1",
+                  "text": "Burrich",
+                  "type": "unstyled",
+                },
+              ],
+              "entityMap": Object {},
+              "name": "Welcome",
+            }
+          }
+          onSave={[Function]}
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
