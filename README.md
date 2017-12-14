@@ -30,5 +30,7 @@ mongofixtures noteTakingDB fixtures.js
 ## Features
 
 - display a rich text editor
+- add styles : bold, italic, underline, strikethrough, quotes, code, ul/ol lists
+- auto-save
 - list notes
-- *coming...*
+- create, rename, edit and delete a note
