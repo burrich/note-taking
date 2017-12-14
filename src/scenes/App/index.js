@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Header } from 'semantic-ui-react';
-import RichTextEditor from '../../components/RichTextEditor';
-import NotesList from '../../components/NotesList';
-
 import { getNotes, createNote, updateNote, deleteNote } from '../../services/api';
 
 import './styles/default.css';
+
+import RichTextEditor from '../../components/RichTextEditor';
+import NotesList from '../../components/NotesList';
 
 /**
  * App scene functionnal component.

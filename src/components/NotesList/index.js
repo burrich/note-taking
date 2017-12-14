@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { List, Input } from 'semantic-ui-react';
-import NotesListItem from './NotesListItem'; 
-import EditNoteModal from './EditNoteModal';
 
 import './styles/default.css';
+
+import NotesListItem from './NotesListItem'; 
+import EditNoteModal from './EditNoteModal';
 
 /**
  * NotesList component.

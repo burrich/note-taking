@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
 // import Editor from 'draft-js-plugins-editor';
 import _ from 'lodash';
-import Controls from './Controls';
 
 import '../../../node_modules/draft-js/dist/Draft.css'; // TODO: move file outside node_modules
 import './styles/default.css';
+
+import Controls from './Controls';
 
 /**
  * RichTextEditor component implementating draft.js RTE editor.
