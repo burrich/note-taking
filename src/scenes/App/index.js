@@ -15,8 +15,20 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      notes: [],
+      selectedNote: -1
+    };
 
+    // this methods binding
+    this.handleAddNote    = this.handleAddNote.bind(this);
+    this.handleSelectNote = this.handleSelectNote.bind(this);
+    this.handleEditNote   = this.handleEditNote.bind(this);
+    this.handleRemoveNote = this.handleRemoveNote.bind(this);
+    this.handleSaveNote   = this.handleSaveNote.bind(this);
+  }
+
+  componentWillMount() {
     getNotes((err, notes) => {
       if (err) return console.error(err);
       
@@ -27,13 +39,6 @@ class App extends Component {
         selectedNote: 0
       });
     });
-
-    // this methods binding
-    this.handleAddNote    = this.handleAddNote.bind(this);
-    this.handleSelectNote = this.handleSelectNote.bind(this);
-    this.handleEditNote   = this.handleEditNote.bind(this);
-    this.handleRemoveNote = this.handleRemoveNote.bind(this);
-    this.handleSaveNote   = this.handleSaveNote.bind(this);
   }
 
   handleAddNote(name) {
@@ -140,7 +145,7 @@ class App extends Component {
 
   render() {
     const notes = this.state.notes;
-    if (!notes) {
+    if (notes.length === 0) {
       return (
         <div>Loadings notes...</div>
       );
