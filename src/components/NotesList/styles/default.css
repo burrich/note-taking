@@ -1,27 +1,4 @@
 .NotesList-content {
-  padding: 0 12px;
-}
-
-.NotesList-item {
-  display: flex;
-  justify-content: space-between;
-
-  margin-top: 10px;
-}
-
-.NotesList-item span {
-  cursor: pointer;
-}
-
-.NotesList-item-selected {
-  font-weight: 600;
-}
-
-.ReactModal__Content p {
-  margin-top: 0;
-}
-
-.ReactModal__Content label {
-  display: block;
-  margin-bottom: 5px;
+  margin-top: 15px;
+  padding-left: 10px;
 }

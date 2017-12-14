@@ -22,7 +22,9 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-modal": "^3.1.5",
-    "react-scripts": "1.0.14"
+    "react-scripts": "1.0.14",
+    "semantic-ui-css": "^2.2.12",
+    "semantic-ui-react": "^0.77.1"
   },
   "devDependencies": {
     "enzyme": "^3.2.0",

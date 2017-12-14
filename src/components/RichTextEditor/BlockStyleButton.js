@@ -1,8 +1,6 @@
 import React from 'react';
 import StyleButton from './StyleButton';
 
-import './styles/style-button.css';
-
 /**
  * BlockStyleButton component.
  */
@@ -11,28 +9,29 @@ function BlockStyleButton(props) {
   const active = props.editorStyle === style.code;
   
   return (
-    <StyleButton style={style}
-                 active={active}
-                 onToggle={props.onToggle} />
+    <StyleButton 
+      style={style}
+      active={active}
+      onToggle={props.onToggle} />
   );
 }
 
 const styles = {
   quotes: {
     code: 'blockquote',
-    label: 'Quotes'
+    name: 'quote right'
   },
   code: {
     code: 'code-block',
-    label: 'Code'
+    name: 'code'
   },
   ul: {
     code: 'unordered-list-item',
-    label: 'Ul'
+    name: 'unordered list'
   },
   ol: {
     code: 'ordered-list-item',
-    label: 'Ol'
+    name: 'ordered list'
   },
 }
 

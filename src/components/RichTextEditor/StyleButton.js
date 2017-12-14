@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-
-import './styles/style-button.css';
+import { Button, Icon } from 'semantic-ui-react';
 
 /**
  * StyleButton component.
@@ -20,16 +19,14 @@ class StyleButton extends Component {
   }
 
   render() {
-    let className = 'RichEditor-styleButton';
-    if (this.props.active) {
-      className += ' RichEditor-activeButton';
-    }
-
     return(
-      <span className={className}
-            onMouseDown={this.onToggle}>
-        {this.style.label}
-      </span>
+      <Button 
+        icon
+        active={this.props.active}
+        onMouseDown={this.onToggle}>
+
+        <Icon name={this.style.name} />
+      </Button>
     );
   }
 }

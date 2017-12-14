@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { List, Input } from 'semantic-ui-react';
 import NotesListItem from './NotesListItem'; 
 import EditNoteModal from './EditNoteModal';
 
@@ -18,26 +19,23 @@ class NotesList extends Component {
       showModal: false
     };
     
-    this.handleAddNoteChange  = this.handleAddNoteChange.bind(this);
-    this.handleAddNoteKeyDown = this.handleAddNoteKeyDown.bind(this);
-    this.handleCloseModal     = this.handleCloseModal.bind(this);
+    this.handleAddNoteChange = this.handleAddNoteChange.bind(this);
+    this.handleAddNote       = this.handleAddNote.bind(this);
+    this.handleCloseModal    = this.handleCloseModal.bind(this);
   }
 
   handleAddNoteChange(e) {
     this.setState({ newNote: e.target.value })
   }
 
-  handleAddNoteKeyDown(e) {
+  handleAddNote(e) {
     // TODO: declare key outside (util module)
     const ENTER_KEY = 13;
-
-    if (e.keyCode !== ENTER_KEY) {
-      return;
+    if (e.type === 'keydown' && e.keyCode !== ENTER_KEY) {
+        return;
     }
 
-    e.preventDefault();
     const newNote = this.state.newNote.trim();
-
     if (newNote) {
       this.props.onAddNote(newNote);
       this.setState({ newNote: '' });
@@ -46,28 +44,24 @@ class NotesList extends Component {
 
   handleOpenModal(note) {
     this.setState({
-      editedNote: note,
-      showModal: true
+      showModal: true,
+      editedNote: note
     });
   }
 
-  handleCloseModal(e, submitName) {
+  handleCloseModal(e, data, submitName) {
     if (submitName) {
       const editedNote = this.state.editedNote;
       this.props.onEditNote(editedNote._id, submitName);
     }
 
     this.setState({
-      editedNote: null,
-      showModal: false
+      showModal: false,
+      editedNote: null
     });
   }
 
   render() {
-    const newNote    = this.state.newNote;
-    const editedNote = this.state.editedNote;
-    const showModal  = this.state.showModal;
-
     const notes = this.props.notes;
     const notesListItems = notes.map((note, index) => {
       const selected = (index === this.props.selectedNote) ? true : false;
@@ -79,28 +73,30 @@ class NotesList extends Component {
         onSelect={this.props.onSelectNote.bind(this, index)}
         onEdit={this.handleOpenModal.bind(this, note)}
         onRemove={this.props.onRemoveNote.bind(this, note._id)} />
-    });
+    }); 
 
     return (
       <div className="NotesList-root">
         <div className="NotesList-add">
-          <input
-            type="text"
-            className="no-border"
+          <Input
+            action={{ icon: 'add', onClick: this.handleAddNote }}
             placeholder="Add a note"
-            value={newNote}
+            value={this.state.newNote}
             onChange={this.handleAddNoteChange}
-            onKeyDown={this.handleAddNoteKeyDown} />
+            onKeyDown={this.handleAddNote} />
         </div>
 
         <div className="NotesList-content">
-          {notesListItems}
+          <List link 
+                size="large">
+            {notesListItems}
+          </List>
         </div>
 
-        <EditNoteModal 
-          show={showModal}
-          onClose={this.handleCloseModal}
-          note={editedNote} />
+        <EditNoteModal
+          note={this.state.editedNote}
+          open={this.state.showModal}
+          onClose={this.handleCloseModal} />
       </div>
     );
   }
