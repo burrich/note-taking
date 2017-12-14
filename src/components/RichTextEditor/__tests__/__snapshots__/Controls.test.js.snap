@@ -4,45 +4,50 @@ exports[`Controls render correctly 1`] = `
 <div
   className="RichEditor-controls"
 >
-  <InlineStyleButton
-    editorStyle={Map {}}
-    name="bold"
-    onToggle={[Function]}
-  />
-  <InlineStyleButton
-    editorStyle={Map {}}
-    name="italic"
-    onToggle={[Function]}
-  />
-  <InlineStyleButton
-    editorStyle={Map {}}
-    name="underline"
-    onToggle={[Function]}
-  />
-  <InlineStyleButton
-    editorStyle={Map {}}
-    name="strikethrough"
-    onToggle={[Function]}
-  />
-  <BlockStyleButton
-    editorStyle=""
-    name="quotes"
-    onToggle={[Function]}
-  />
-  <BlockStyleButton
-    editorStyle=""
-    name="code"
-    onToggle={[Function]}
-  />
-  <BlockStyleButton
-    editorStyle=""
-    name="ul"
-    onToggle={[Function]}
-  />
-  <BlockStyleButton
-    editorStyle=""
-    name="ol"
-    onToggle={[Function]}
-  />
+  <ButtonGroup>
+    <InlineStyleButton
+      editorStyle={Map {}}
+      name="bold"
+      onToggle={[Function]}
+    />
+    <InlineStyleButton
+      editorStyle={Map {}}
+      name="italic"
+      onToggle={[Function]}
+    />
+    <InlineStyleButton
+      editorStyle={Map {}}
+      name="underline"
+      onToggle={[Function]}
+    />
+    <InlineStyleButton
+      editorStyle={Map {}}
+      name="strikethrough"
+      onToggle={[Function]}
+    />
+  </ButtonGroup>
+   
+  <ButtonGroup>
+    <BlockStyleButton
+      editorStyle=""
+      name="quotes"
+      onToggle={[Function]}
+    />
+    <BlockStyleButton
+      editorStyle=""
+      name="code"
+      onToggle={[Function]}
+    />
+    <BlockStyleButton
+      editorStyle=""
+      name="ul"
+      onToggle={[Function]}
+    />
+    <BlockStyleButton
+      editorStyle=""
+      name="ol"
+      onToggle={[Function]}
+    />
+  </ButtonGroup>
 </div>
 `;

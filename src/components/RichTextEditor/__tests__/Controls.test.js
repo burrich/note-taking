@@ -13,8 +13,9 @@ test('Controls render correctly', () => {
   };
 
   const controls = shallow(
-    <Controls currentStyle={currentStyle}
-              toggleStyle={toggleStyle} />
+    <Controls 
+      currentStyle={currentStyle}
+      toggleStyle={toggleStyle} />
   );
   expect(controls).toMatchSnapshot();
   // expect(controls.find(StyleButton)).toHaveLength(8);

@@ -7,20 +7,20 @@ exports[`Active inline style button renders correctly 1`] = `
   style={
     Object {
       "code": "code-block",
-      "label": "Code",
+      "name": "code",
     }
   }
 />
 `;
 
-exports[`Inative inline style button renders correctly 1`] = `
+exports[`Inactive inline style button renders correctly 1`] = `
 <StyleButton
   active={false}
   onToggle={[Function]}
   style={
     Object {
       "code": "code-block",
-      "label": "Code",
+      "name": "code",
     }
   }
 />

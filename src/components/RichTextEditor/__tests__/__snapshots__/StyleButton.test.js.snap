@@ -1,19 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Active style button renders correctly 1`] = `
-<span
-  className="RichEditor-styleButton RichEditor-activeButton"
+<Button
+  active={true}
+  as="button"
+  icon={true}
   onMouseDown={[Function]}
 >
-  label
-</span>
+  <Icon
+    as="i"
+    name="bold"
+  />
+</Button>
 `;
 
 exports[`Inactive style button renders correctly 1`] = `
-<span
-  className="RichEditor-styleButton"
+<Button
+  active={false}
+  as="button"
+  icon={true}
   onMouseDown={[Function]}
 >
-  label
-</span>
+  <Icon
+    as="i"
+    name="bold"
+  />
+</Button>
 `;
