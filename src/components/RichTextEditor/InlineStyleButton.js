@@ -16,6 +16,7 @@ function InlineStyleButton(props) {
   );
 }
 
+// code for draft and name for semantic ui icons
 const styles = {
   bold: {
     code: 'BOLD',
