@@ -1,5 +1,3 @@
-/* TODO : sass + flex mixin + should not be inside root dir */
-
 *,
 *:before,
 *:after {
@@ -16,33 +14,4 @@ body {
   margin: 0;
   padding: 0;
   background: hsla(0, 0%, 95%, 1); /* #f2f2f2 */ 
-}
-
-input[type=text] {
-  width: 100%;
-  padding: .3rem .5rem;
-  border: 1px solid #ced4da;
-  border-radius: .25rem;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-input[type=text].no-border {
-  border: 0;
-}
-
-.form-inline input[type=text] {
-  width: auto;
-}
-
-.btn {
-  padding: .3rem .5rem;
-  border: 1px solid transparent;
-  border-radius: .25rem;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.right {
-  float: right;
 }

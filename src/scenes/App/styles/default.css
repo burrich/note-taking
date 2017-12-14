@@ -27,11 +27,8 @@
 }
 
 .container .container-left {
-  flex-basis: 15%;
-
-  padding-top: 36px;
 }
 
 .container .container-right {
-  flex-basis: 85%;
+  flex-grow: 1;
 }
