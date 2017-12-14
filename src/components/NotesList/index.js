@@ -86,9 +86,12 @@ class NotesList extends Component {
             onKeyDown={this.handleAddNote} />
         </div>
 
-        <List link>
-          {notesListItems}
-        </List>
+        <div className="NotesList-content">
+          <List link 
+                size="large">
+            {notesListItems}
+          </List>
+        </div>
 
         <EditNoteModal
           note={this.state.editedNote}

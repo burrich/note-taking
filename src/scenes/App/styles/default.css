@@ -7,6 +7,10 @@
   margin: 0 auto;
 }
 
+.header {
+  padding-top: 15px;
+}
+
 .container-wrapper {
   flex-grow: 1;
 
