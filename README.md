@@ -1,18 +1,13 @@
 # Note taking
 
-A note taking app implementing **draft** RTE with **react**, **express** and **mongodb**.
+A note taking app implementing **draft** RTE with **react**, **express** and **mongodb**. Semantic UI is used for styling components.
 
 ## Setup
 
 Install dependencies :
 ```sh
 npm install
-```
-
-Start mongodb server :
-```sh
-mongod --dbpath path
-# path example : C:\MongoDB\data
+npm install -g pow-mongodb-fixtures foreman
 ```
 
 Create database and insert data :
@@ -23,8 +18,14 @@ db.createCollection("notes")
 ```
 
 ```sh
-npm install pow-mongodb-fixtures -g
 mongofixtures noteTakingDB fixtures.js
+```
+
+## Usage
+
+Start local dev servers with foreman (webpack react server, mongodb, express) :
+```sh
+npm start
 ```
 
 ## Features
