@@ -1,10 +1,11 @@
 const MongoClient = require('mongodb').MongoClient;
-const assert      = require('assert');
 
 const url = 'mongodb://localhost:27017/noteTakingDB';
 
+let database = null;
+
 /**
- * Connect to mongodb db (async) and get db object.
+ * Connect to mongodb db (async) and set db object.
  */
 exports.connect = function(callback) {
   MongoClient.connect(url, (err, db) => {
@@ -13,6 +14,11 @@ exports.connect = function(callback) {
     }
     
     console.log("Connected successfully to MongoDB server");
-    callback(null, db);
+    database = db;
+    callback(null);
   });
 };
+
+exports.getDb = function() {
+  return database;
+}
