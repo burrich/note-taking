@@ -7,7 +7,6 @@ const notes = db.collection('notes');
 exports.findAll = function(callback) {
   notes.find().toArray((err, results) => {
     if (err) return callback(err);
-    console.log('NOT OK');
     callback(null, results);
   });
 };

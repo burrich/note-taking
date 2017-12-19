@@ -3,7 +3,7 @@ const note    = require('../db/models/note');
 
 /*
  * Router for notes CRUD
- * TODO: check body
+ * TODO: error handling => check body and path attr
  */
 const router = express.Router();
 
@@ -45,7 +45,7 @@ router.post('/', (req, res, next) => {
   note.insert(jsonNote, (err, result) => {
     if (err) return next(err);
 
-    console.log('CREATE', result.result);
+    console.log('CREATE :', result.result);
     res.json(result);
   });
 });

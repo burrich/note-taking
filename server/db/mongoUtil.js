@@ -4,7 +4,7 @@ const url = 'mongodb://localhost:27017/noteTakingDB';
 
 let database = null;
 
-/**
+/*
  * Connect to mongodb db (async) and set db object.
  */
 exports.connect = function(callback) {
