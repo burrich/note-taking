@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 
-const url = 'mongodb://localhost:27017/noteTakingDB';
+const url = 'mongodb://localhost:27017/noteTakingTestDB';
 
 let database = null;
 
