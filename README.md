@@ -12,6 +12,7 @@ npm install -g foreman
 
 Init test database (**mongodb local server required**) :
 ```sh
+npm run start-db
 npm run fixtures
 ```
 
