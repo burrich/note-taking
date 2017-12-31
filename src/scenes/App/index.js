@@ -67,7 +67,7 @@ class App extends Component {
 
       // Update state with inserted id
       const updatedNotes = this.state.notes.slice();
-      newNote._id = result.id;
+      newNote._id = result.insertedId;
       updatedNotes.push(newNote);
 
       this.setState({

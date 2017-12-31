@@ -45,8 +45,9 @@ router.post('/', (req, res, next) => {
   note.insert(jsonNote, (err, result) => {
     if (err) return next(err);
 
-    console.log('CREATE :', result.result);
-    res.json(result);
+    console.log('CREATE :', result);
+    const results = { ...result.result, insertedId: result.insertedId };
+    res.json(results);
   });
 });
 
