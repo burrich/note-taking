@@ -22,6 +22,7 @@ class StyleButton extends Component {
     return(
       <Button 
         icon
+        disabled={this.props.disabled}
         active={this.props.active}
         onMouseDown={this.onToggle}>
 

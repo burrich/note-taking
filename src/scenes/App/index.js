@@ -143,14 +143,12 @@ class App extends Component {
   }
 
   render() {
-    const notes = this.state.notes;
-    if (notes.length === 0) {
-      return (
-        <div>Loadings notes...</div>
-      );
-    }
+    // TODO: loading ?
 
+    const notes = this.state.notes;
     const selectedNote = this.state.selectedNote;
+    const editorDisabled = (notes.length === 0) ? true : false;
+
     return (
       <div className="App">
         <div className="header">
@@ -176,6 +174,7 @@ class App extends Component {
             <div className="container-right">
               <RichTextEditor
                 note={notes[selectedNote]}
+                disabled={editorDisabled}
                 onSave={this.handleSaveNote} />
             </div>
           </div>

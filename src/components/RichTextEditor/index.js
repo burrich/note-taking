@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
+import { Editor, EditorState, ContentState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
 // import Editor from 'draft-js-plugins-editor';
 import _ from 'lodash';
 
@@ -36,7 +36,10 @@ class RichTextEditor extends Component {
   componentWillReceiveProps(nextProps) {
     const nextNote = nextProps.note;
     if (!nextNote) {
-      this.setState({ editorState: EditorState.createEmpty() });
+      const defaultContent = ContentState.createFromText(
+        'First you must add a note on the left side panel.'
+      );
+      this.setState({ editorState: EditorState.createWithContent(defaultContent) });
       return;
     }
 
@@ -48,7 +51,9 @@ class RichTextEditor extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.handleAutoSave(prevProps, prevState);    
+    if (!this.props.disabled) {
+      this.handleAutoSave(prevProps, prevState);
+    }
   }
 
   handleAutoSave(prevProps, prevState) {
@@ -150,7 +155,8 @@ class RichTextEditor extends Component {
     return (
       <div className="RichEditor-root">
         <Controls currentStyle={currentStyle}
-                  toggleStyle={toggleStyle} />
+                  toggleStyle={toggleStyle}
+                  editorDisabled={this.props.disabled} />
 
         <div className={editorWrapperClass} onClick={this.focus}>
           <Editor editorState={editorState}

@@ -12,7 +12,8 @@ function InlineStyleButton(props) {
     <StyleButton 
       style={style}
       active={active}
-      onToggle={props.onToggle} />
+      onToggle={props.onToggle}
+      disabled={props.disabled} />
   );
 }
 
