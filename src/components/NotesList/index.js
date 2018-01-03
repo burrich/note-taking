@@ -73,7 +73,7 @@ class NotesList extends Component {
         selected={selected}
         onSelect={this.props.onSelectNote.bind(this, index)}
         onEdit={this.handleOpenModal.bind(this, note)}
-        onRemove={this.props.onRemoveNote.bind(this, note._id)} />
+        onRemove={this.props.onRemoveNote.bind(this, note._id, index)} />
     }); 
 
     return (

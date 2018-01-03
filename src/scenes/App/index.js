@@ -99,19 +99,18 @@ class App extends Component {
     });
   }
 
-  handleRemoveNote(id) {
+  handleRemoveNote(id, index) {
     deleteNote(id, (err, result) => {
       if (err) return console.error(err);
 
       console.log(result);
 
       // Update state
-      // TODO: log immutability !!!
       const notes = this.state.notes;
       const updatedNotes = notes.filter(note => note._id !== id);
       
       let selectedNote = this.state.selectedNote;
-      if (selectedNote !== 0) {
+      if (selectedNote === index && selectedNote !== 0) {
         selectedNote--;
       }
 
