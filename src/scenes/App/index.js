@@ -99,18 +99,19 @@ class App extends Component {
     });
   }
 
+  // TODO: remove id param ?
   handleRemoveNote(id, index) {
     deleteNote(id, (err, result) => {
       if (err) return console.error(err);
 
       console.log(result);
 
-      // Update state
       const notes = this.state.notes;
       const updatedNotes = notes.filter(note => note._id !== id);
       
+      // Update notes list selected index
       let selectedNote = this.state.selectedNote;
-      if (selectedNote === index && selectedNote !== 0) {
+      if (selectedNote !== 0 && index <= selectedNote) {
         selectedNote--;
       }
 
