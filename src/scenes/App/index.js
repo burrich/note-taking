@@ -144,10 +144,14 @@ class App extends Component {
   }
 
   render() {
-    // TODO: loading ?
+    const selectedNote = this.state.selectedNote;
+    if (selectedNote === -1) { // Initial state
+      return (
+        <div>Loadings notes...</div>
+      );
+    }
 
     const notes = this.state.notes;
-    const selectedNote = this.state.selectedNote;
     const editorDisabled = (notes.length === 0) ? true : false;
 
     return (
