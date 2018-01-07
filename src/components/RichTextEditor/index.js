@@ -67,41 +67,6 @@ class RichTextEditor extends Component {
     }
   }
 
-  handleAutoSave(prevProps, prevState) {
-    const previousRawContent = convertToRaw(prevState.editorState.getCurrentContent());
-    const currentRawContent  = convertToRaw(this.state.editorState.getCurrentContent());
-
-    const currentNote = this.props.note;
-    const isContentUpdated = !_.isEqual(previousRawContent, currentRawContent);
-    const hasNoteChanged = (currentNote !== prevProps.note) ? true : false;
-
-    if (isContentUpdated && !hasNoteChanged) {
-      const updatedNote = {
-        ...currentNote,
-        ...currentRawContent
-      }
-      this.onUpdateContent(updatedNote);
-    }
-  }
-
-  // TODO: better way to define the debounce method
-  onUpdateContent = _.debounce((updatedNote) => {
-    this.props.onSave(updatedNote);
-  }, 1000);
-
-  createContent(note) {
-    if (!note) {
-      const defaultContent = ContentState.createFromText(
-        'First you must add a note on the left side panel.'
-      );
-      return EditorState.createWithContent(defaultContent);
-    }
-
-    const contentState = convertFromRaw(note);
-    const editorState = EditorState.createWithContent(contentState);
-    return EditorState.moveSelectionToEnd(editorState); 
-  }
-
   onChange(editorState) {  
     this.setState({ editorState });
   
@@ -126,8 +91,26 @@ class RichTextEditor extends Component {
     }
   }
 
-  focus() {
-    this.domEditor.focus();
+  // TODO: better way to define the debounce method
+  onUpdateContent = _.debounce((updatedNote) => {
+    this.props.onSave(updatedNote);
+  }, 1000);
+  
+  handleAutoSave(prevProps, prevState) {
+    const previousRawContent = convertToRaw(prevState.editorState.getCurrentContent());
+    const currentRawContent  = convertToRaw(this.state.editorState.getCurrentContent());
+
+    const currentNote = this.props.note;
+    const isContentUpdated = !_.isEqual(previousRawContent, currentRawContent);
+    const hasNoteChanged = (currentNote !== prevProps.note) ? true : false;
+
+    if (isContentUpdated && !hasNoteChanged) {
+      const updatedNote = {
+        ...currentNote,
+        ...currentRawContent
+      }
+      this.onUpdateContent(updatedNote);
+    }
   }
 
   handleKeyCommand(command, editorState) {
@@ -138,6 +121,42 @@ class RichTextEditor extends Component {
     }
     return 'not-handled';
   }
+
+  createContent(note) {
+    if (!note) {
+      const defaultContent = ContentState.createFromText(
+        'First you must add a note on the left side panel.'
+      );
+      return EditorState.createWithContent(defaultContent);
+    }
+
+    const contentState = convertFromRaw(note);
+    const editorState = EditorState.createWithContent(contentState);
+    return EditorState.moveSelectionToEnd(editorState); 
+  }
+
+  focus() {
+    this.domEditor.focus();
+  }
+  
+  getCurrentStyle() {
+    const editorState = this.state.editorState;
+    
+    // get current editor inline style
+    const currentInlineStyle = editorState.getCurrentInlineStyle();
+    
+    // get current editor block style
+    const selection = editorState.getSelection(); 
+    const currentBlockStyle = editorState
+    .getCurrentContent()
+    .getBlockForKey(selection.getStartKey())
+    .getType();
+    
+    return {
+      inline: currentInlineStyle,
+      block: currentBlockStyle
+    };
+  }
   
   toggleInlineStyle(styleCode) {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, styleCode));
@@ -145,25 +164,6 @@ class RichTextEditor extends Component {
 
   toggleBlockStyle(styleCode) {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, styleCode));
-  }
-
-  getCurrentStyle() {
-    const editorState = this.state.editorState;
-
-    // get current editor inline style
-    const currentInlineStyle = editorState.getCurrentInlineStyle();
-
-    // get current editor block style
-    const selection = editorState.getSelection(); 
-    const currentBlockStyle = editorState
-      .getCurrentContent()
-      .getBlockForKey(selection.getStartKey())
-      .getType();
-
-    return {
-      inline: currentInlineStyle,
-      block: currentBlockStyle
-    };
   }
 
   render() {
