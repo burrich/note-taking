@@ -121,7 +121,7 @@ class App extends Component {
 
       // Update notes list selected index
       let selectedNote = this.state.selectedNote;
-      if (index <= selectedNote) {
+      if (selectedNote > 0 && index <= selectedNote) {
         selectedNote--;
       }
 
