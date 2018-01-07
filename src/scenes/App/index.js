@@ -15,29 +15,40 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    // TODO: notesLoaded => better way to manage first rendering ? => remove from state
     this.state = {
       notes: [],
-      selectedNote: -1
+      selectedNote: -1,
+      focusEditor: false,
+      notesLoaded: false
     };
 
     // this methods binding
-    this.handleAddNote    = this.handleAddNote.bind(this);
-    this.handleSelectNote = this.handleSelectNote.bind(this);
-    this.handleEditNote   = this.handleEditNote.bind(this);
-    this.handleRemoveNote = this.handleRemoveNote.bind(this);
-    this.handleSaveNote   = this.handleSaveNote.bind(this);
+    this.handleAddNote     = this.handleAddNote.bind(this);
+    this.handleSelectNote  = this.handleSelectNote.bind(this);
+    this.handleEditNote    = this.handleEditNote.bind(this);
+    this.handleRemoveNote  = this.handleRemoveNote.bind(this);
+    this.handleSaveNote    = this.handleSaveNote.bind(this);
+    this.handleEditorFocus = this.handleEditorFocus.bind(this);
+    this.handleEditorBlur  = this.handleEditorBlur.bind(this);
   }
 
   componentWillMount() {
     getNotes((err, notes) => {
       if (err) return console.error(err);
-      
-      console.log(notes);
 
-      this.setState({
-        notes: notes,
-        selectedNote: 0
-      });
+      console.log(notes);
+      
+      if (notes.length > 0) {
+        this.setState({
+          notes: notes,
+          selectedNote: 0,
+          focusEditor: true,
+          notesLoaded: true
+        });
+      } else {
+        this.setState({ notesLoaded: true });
+      }
     });
   }
 
@@ -74,13 +85,14 @@ class App extends Component {
         notes: updatedNotes,
         selectedNote: updatedNotes.length - 1
       });
-    });
 
-    // TODO: editor focus
+      this.handleEditorFocus();
+    });
   }
 
   handleSelectNote(index) {
     this.setState({ selectedNote: index });
+    this.handleEditorFocus();
   }
 
   handleEditNote(id, name) {
@@ -108,14 +120,14 @@ class App extends Component {
 
       const notes = this.state.notes;
       const updatedNotes = notes.filter(note => note._id !== id);
-      
+
       // Update notes list selected index
       let selectedNote = this.state.selectedNote;
-      if (selectedNote !== 0 && index <= selectedNote) {
+      if (index <= selectedNote) {
         selectedNote--;
       }
 
-      this.setState({ 
+      this.setState({
         notes: updatedNotes,
         selectedNote: selectedNote
       });
@@ -143,9 +155,17 @@ class App extends Component {
     });
   }
 
+  handleEditorFocus() {
+    this.setState({ focusEditor: true });
+  }
+
+  handleEditorBlur() {
+    this.setState({ focusEditor: false });
+  }
+
   render() {
     const selectedNote = this.state.selectedNote;
-    if (selectedNote === -1) { // Initial state
+    if (!this.state.notesLoaded) { // Initial state
       return (
         <div>Loadings notes...</div>
       );
@@ -167,7 +187,7 @@ class App extends Component {
           <div className="container">
             <div className="container-left">
               {/* TODO: pass only notes names */}
-              <NotesList 
+              <NotesList
                 notes={notes}
                 selectedNote={selectedNote}
                 onAddNote={this.handleAddNote}
@@ -180,7 +200,10 @@ class App extends Component {
               <RichTextEditor
                 note={notes[selectedNote]}
                 disabled={editorDisabled}
-                onSave={this.handleSaveNote} />
+                onSave={this.handleSaveNote}
+                onFocus={this.handleEditorFocus}
+                onBlur={this.handleEditorBlur}
+                isFocus={this.state.focusEditor} />
             </div>
           </div>
         </div>

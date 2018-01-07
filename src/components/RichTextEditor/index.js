@@ -23,6 +23,8 @@ class RichTextEditor extends Component {
     // this methods binding
     this.onChange          = this.onChange.bind(this);
     this.onTab             = this.onTab.bind(this);
+    this.onFocus           = this.onFocus.bind(this);
+    this.onBlur            = this.onBlur.bind(this);
     this.focus             = this.focus.bind(this);
     this.handleKeyCommand  = this.handleKeyCommand.bind(this);
     this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
@@ -30,19 +32,22 @@ class RichTextEditor extends Component {
   }
 
   componentDidMount() {
-    // this.focus();
+    if (this.props.isFocus) {
+      this.focus();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     const nextNote = nextProps.note;
+
+    // Set rte default content (no notes)
     if (!nextNote) {
-      const defaultContent = ContentState.createFromText(
-        'First you must add a note on the left side panel.'
-      );
-      this.setState({ editorState: EditorState.createWithContent(defaultContent) });
+      const editorState = this.createContent(null);
+      this.setState({ editorState: editorState });
       return;
     }
 
+    // Load note content
     const note = this.props.note;
     if (!note || nextNote._id !== note._id) {
       const editorState = this.createContent(nextNote);
@@ -51,8 +56,14 @@ class RichTextEditor extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // Auto-save
     if (!this.props.disabled) {
       this.handleAutoSave(prevProps, prevState);
+    }
+
+    // Focus
+    if (!prevProps.isFocus && this.props.isFocus) {
+      this.focus();
     }
   }
 
@@ -80,11 +91,15 @@ class RichTextEditor extends Component {
 
   createContent(note) {
     if (!note) {
-      return EditorState.createEmpty();
+      const defaultContent = ContentState.createFromText(
+        'First you must add a note on the left side panel.'
+      );
+      return EditorState.createWithContent(defaultContent);
     }
 
     const contentState = convertFromRaw(note);
-    return EditorState.createWithContent(contentState); 
+    const editorState = EditorState.createWithContent(contentState);
+    return EditorState.moveSelectionToEnd(editorState); 
   }
 
   onChange(editorState) {  
@@ -97,6 +112,14 @@ class RichTextEditor extends Component {
   onTab(e) {
     const maxDepth = 4;
     this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
+  }
+
+  onFocus(e) {
+    this.props.onFocus();
+  }
+
+  onBlur(e) {
+    this.props.onBlur();
   }
 
   focus() {
@@ -163,6 +186,8 @@ class RichTextEditor extends Component {
                   onChange={this.onChange}
                   handleKeyCommand={this.handleKeyCommand}
                   onTab={this.onTab}
+                  onFocus={this.onFocus}
+                  onBlur={this.onBlur}
                   blockStyleFn={getBlockStyle}
                   spellCheck={true}
                   readOnly={readOnly}
