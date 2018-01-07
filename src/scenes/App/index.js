@@ -83,16 +83,17 @@ class App extends Component {
 
       this.setState({
         notes: updatedNotes,
-        selectedNote: updatedNotes.length - 1
+        selectedNote: updatedNotes.length - 1,
+        focusEditor: true
       });
-
-      this.handleEditorFocus();
     });
   }
 
   handleSelectNote(index) {
-    this.setState({ selectedNote: index });
-    this.handleEditorFocus();
+    this.setState({
+      selectedNote: index,
+      focusEditor: true
+    });
   }
 
   handleEditNote(id, name) {
