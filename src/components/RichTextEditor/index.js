@@ -115,11 +115,15 @@ class RichTextEditor extends Component {
   }
 
   onFocus(e) {
-    this.props.onFocus();
+    if (!this.props.isFocus) {
+      this.props.onFocus();
+    }
   }
 
   onBlur(e) {
-    this.props.onBlur();
+    if (this.props.isFocus) {
+      this.props.onBlur();
+    }
   }
 
   focus() {
