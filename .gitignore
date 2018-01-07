@@ -9,6 +9,9 @@
 # production
 /build
 
+# text editor
+launch.json
+
 # misc
 .DS_Store
 .env.local
