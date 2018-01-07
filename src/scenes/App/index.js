@@ -15,12 +15,10 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    // TODO: notesLoaded => better way to manage first rendering ? => remove from state
     this.state = {
-      notes: [],
+      notes: null,
       selectedNote: -1,
-      focusEditor: false,
-      notesLoaded: false
+      focusEditor: false
     };
 
     // this methods binding
@@ -39,16 +37,15 @@ class App extends Component {
 
       console.log(notes);
       
+      let updatedState = { notes: notes };
+
       if (notes.length > 0) {
-        this.setState({
-          notes: notes,
+        Object.assign(updatedState, {
           selectedNote: 0,
-          focusEditor: true,
-          notesLoaded: true
+          focusEditor: true
         });
-      } else {
-        this.setState({ notesLoaded: true });
       }
+      this.setState(updatedState);
     });
   }
 
@@ -165,14 +162,14 @@ class App extends Component {
   }
 
   render() {
-    const selectedNote = this.state.selectedNote;
-    if (!this.state.notesLoaded) { // Initial state
+    const notes = this.state.notes;
+    if (!notes) { // Initial state
       return (
         <div>Loadings notes...</div>
       );
     }
-
-    const notes = this.state.notes;
+    
+    const selectedNote = this.state.selectedNote;
     const editorDisabled = (notes.length === 0) ? true : false;
 
     return (
