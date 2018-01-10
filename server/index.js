@@ -11,7 +11,7 @@ mongoUtil.connect(err => {
   if (err) return console.error(err);
 
   const app = require('./app');
-  const port = process.env.PORT || 3200;
+  const port = process.env.PORT || 3100;
   
   app.listen(port, () => {
     console.log('Express server listen on port ', port)
