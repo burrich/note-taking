@@ -10,8 +10,10 @@ class EditNoteModal extends Component {
 
     this.state = { inputName: '' };
 
-    this.handleFormSubmit      = this.handleFormSubmit.bind(this);
-    this.handleInputNameChange = this.handleInputNameChange.bind(this);
+    this.handleFormSubmit       = this.handleFormSubmit.bind(this);
+    this.handleInputNameChange  = this.handleInputNameChange.bind(this);
+    this.handleInputNameKeyDown = this.handleInputNameKeyDown.bind(this);
+    this.handleInputNameRef     = this.handleInputNameRef.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -24,32 +26,56 @@ class EditNoteModal extends Component {
   }
 
   handleFormSubmit(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
 
     const submitName = this.state.inputName;
-    this.props.onClose(e, null, submitName);
+    this.props.onClose(e, null, submitName.trim());
   }
 
   handleInputNameChange(e) {
     this.setState({ inputName: e.target.value });
   }
 
-  render() {
-    const note = this.props.note;
-    let editForm = null;
-
-    if (note) {
-      editForm = (
-        <Form>
-          <Form.Field inline>
-            <label>Name : </label>
-            <Input 
-              value={this.state.inputName}
-              onChange={this.handleInputNameChange} />
-          </Form.Field>
-        </Form>
-      );
+  handleInputNameKeyDown(e) {
+    const ENTER_KEY = 13;
+    if (e.keyCode !== ENTER_KEY) {
+        return;
     }
+
+    this.handleFormSubmit();
+  }
+
+  /**
+   * Handle input name focus on modal opening.
+   * 
+   * We're not setting element to an instance variable (ref)
+   * because it could be null inside componentDidUpdate()
+   * Input name processing must be done here, could do it inside onOpen Modal prop too.
+   * See https://github.com/Semantic-Org/Semantic-UI-React/issues/901.
+   */
+  handleInputNameRef(el) {
+    if (el) {
+      const length = el.props.value.length;
+      el.inputRef.setSelectionRange(length, length);
+      el.focus();
+    }
+  }
+
+  render() {
+    const editForm = (
+      <Form>
+        <Form.Field inline>
+          <label>Name : </label>
+          <Input 
+            value={this.state.inputName}
+            ref={this.handleInputNameRef}
+            onChange={this.handleInputNameChange}
+            onKeyDown={this.handleInputNameKeyDown} />
+        </Form.Field>
+      </Form>
+    );
 
     return (
       <Modal
