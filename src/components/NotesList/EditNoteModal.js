@@ -51,8 +51,8 @@ class EditNoteModal extends Component {
    * Handle input name focus on modal opening.
    * 
    * We're not setting element to an instance variable (ref)
-   * because it could be null inside componentDidUpdate()
-   * Input name processing must be done here, could do it inside onOpen Modal prop too.
+   * because it could be null inside componentDidUpdate().
+   * Input name processing must be done here, could not doing it inside onOpen Modal prop.
    * See https://github.com/Semantic-Org/Semantic-UI-React/issues/901.
    */
   handleInputNameRef(el) {
