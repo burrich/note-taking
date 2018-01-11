@@ -7,7 +7,6 @@ A note taking app implementing draft rte with **react**, **express** and **mongo
 Install dependencies :
 ```sh
 npm install
-npm install -g foreman
 ```
 
 Init test database (**mongodb local server required**) :
@@ -18,7 +17,7 @@ npm run fixtures
 
 ## Usage
 
-Start local dev servers with foreman (webpack react server, mongodb, express) :
+Start local dev servers concurrently (webpack react server, mongodb, express) :
 ```sh
 npm start
 ```
