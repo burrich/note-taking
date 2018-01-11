@@ -9,17 +9,17 @@ Install dependencies :
 npm install
 ```
 
-Init test database (**mongodb local server required**) :
-```sh
-npm run start-db
-npm run fixtures
-```
-
 ## Usage
 
-Start local dev servers concurrently (webpack react server, mongodb, express) :
+Start local dev servers with concurrently (webpack react server, mongodb, express) :  
+**=> mongodb local server required**
 ```sh
 npm start
+```
+
+Load welcome note (optional) :
+```sh
+npm run fixtures
 ```
 
 ## Features
