@@ -17,27 +17,27 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "draft-js": "^0.10.4",
-    "draft-js-plugins-editor": "^2.0.1",
-    "express": "^4.16.2",
-    "lodash": "^4.17.4",
-    "mongodb": "^2.2.33",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-modal": "^3.1.5",
-    "react-scripts": "1.0.14",
-    "semantic-ui-css": "^2.2.12",
-    "semantic-ui-react": "^0.77.1"
+    "body-parser": "^1.18.3",
+    "draft-js": "^0.10.5",
+    "draft-js-plugins-editor": "^2.1.1",
+    "express": "^4.16.3",
+    "lodash": "^4.17.10",
+    "mongodb": "^2.2.36",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-modal": "^3.5.1",
+    "react-scripts": "^1.1.4",
+    "semantic-ui-css": "^2.3.3",
+    "semantic-ui-react": "^0.77.2"
   },
   "devDependencies": {
-    "concurrently": "^3.5.1",
-    "enzyme": "^3.2.0",
-    "enzyme-adapter-react-16": "^1.1.0",
-    "enzyme-to-json": "^3.2.2",
+    "concurrently": "^3.6.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.4",
     "jest": "^21.2.1",
-    "nodemon": "^1.12.1",
-    "supertest": "^3.0.0",
+    "nodemon": "^1.18.3",
+    "supertest": "^3.1.0",
     "wait-on": "^2.1.0"
   }
 }
