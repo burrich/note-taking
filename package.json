@@ -5,9 +5,6 @@
   "private": true,
   "main": "index.js",
   "proxy": "http://localhost:3100",
-  "jest": {
-    "testURL": "http://localhost"
-  },
   "scripts": {
     "start": "concurrently -k -n \"DB,API,WEB\" -c \"blue,magenta,yellow\" \"npm run start-db\" \"npm run start-api\" \"npm run start-web\"",
     "start-web": "react-scripts start",
@@ -16,7 +13,7 @@
     "fixtures": "mongoimport --db noteTakingTestDB --collection notes --drop --file ./server/db/fixtures/notes.json",
     "build": "react-scripts build",
     "test-web": "react-scripts test --env=jsdom",
-    "test-api": "jest --watch api.test.js",
+    "test-api": "jest --watch api.test.js --testURL=\"http://localhost\"",
     "eject": "react-scripts eject"
   },
   "dependencies": {
