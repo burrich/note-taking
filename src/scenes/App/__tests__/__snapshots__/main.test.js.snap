@@ -125,6 +125,8 @@ exports[`App renders correctly with notes 1`] = `
         className="container-right"
       >
         <RichTextEditor
+          disabled={false}
+          isFocus={true}
           note={
             Object {
               "blocks": Array [
@@ -184,6 +186,8 @@ exports[`App renders correctly with notes 1`] = `
               "name": "Welcome",
             }
           }
+          onBlur={[Function]}
+          onFocus={[Function]}
           onSave={[Function]}
         />
       </div>
