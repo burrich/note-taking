@@ -28,7 +28,7 @@
     "react-modal": "^3.5.1",
     "react-scripts": "^1.1.4",
     "semantic-ui-css": "^2.3.3",
-    "semantic-ui-react": "^0.77.2"
+    "semantic-ui-react": "^0.82.1"
   },
   "devDependencies": {
     "concurrently": "^3.6.1",
