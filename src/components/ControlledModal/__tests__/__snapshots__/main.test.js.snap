@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Controlled modal renders correctly 1`] = `
+<Modal
+  centered={true}
+  closeOnDimmerClick={true}
+  closeOnDocumentClick={false}
+  dimmer={true}
+  eventPool="Modal"
+  onClose={[Function]}
+  open={true}
+  size="mini"
+>
+  <ModalHeader>
+    controlled modal
+  </ModalHeader>
+  <ModalContent>
+    modal content
+  </ModalContent>
+  modal action
+</Modal>
+`;
