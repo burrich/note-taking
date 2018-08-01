@@ -8,7 +8,7 @@ import EditNoteModal from './EditNoteModal';
 
 /**
  * NotesList component.
- * TODO: modal component
+ * TODO: input component
  */
 class NotesList extends Component {
   constructor(props) {
@@ -76,6 +76,10 @@ class NotesList extends Component {
         onRemove={this.props.onRemoveNote.bind(this, note._id, index)} />
     }); 
 
+    const editedNote = this.state.editedNote;
+    const editedNoteName = editedNote ? editedNote.name : ''; 
+    const editedNoteId = editedNote ? editedNote._id : null; 
+
     return (
       <div className="NotesList-root">
         <div className="NotesList-add">
@@ -95,7 +99,8 @@ class NotesList extends Component {
         </div>
 
         <EditNoteModal
-          note={this.state.editedNote}
+          key={editedNoteId}
+          noteName={editedNoteName}
           open={this.state.showModal}
           onClose={this.handleCloseModal} />
       </div>

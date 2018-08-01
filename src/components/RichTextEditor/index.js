@@ -37,24 +37,6 @@ class RichTextEditor extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const nextNote = nextProps.note;
-
-    // Set rte default content (no notes)
-    if (!nextNote) {
-      const editorState = this.createContent(null);
-      this.setState({ editorState: editorState });
-      return;
-    }
-
-    // Load note content
-    const note = this.props.note;
-    if (!note || nextNote._id !== note._id) {
-      const editorState = this.createContent(nextNote);
-      this.setState({ editorState: editorState });
-    }
-  }
-
   componentDidUpdate(prevProps, prevState) {
     // Auto-save
     if (!this.props.disabled) {

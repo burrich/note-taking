@@ -31,14 +31,15 @@ class App extends Component {
     this.handleEditorBlur  = this.handleEditorBlur.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    // Fetch notes from API and update state.
     getNotes((err, notes) => {
       if (err) return console.error(err);
-
+  
       console.log(notes);
       
       let updatedState = { notes: notes };
-
+  
       if (notes.length > 0) {
         Object.assign(updatedState, {
           selectedNote: 0,
@@ -161,6 +162,13 @@ class App extends Component {
     this.setState({ focusEditor: false });
   }
 
+  /**
+   * Diplay a loading message when notes aren't loaded
+   * or render Header, NotesList and RichTextEditor components.
+   * 
+   * On RichTextEditor, key attribute create a new instance instead of update.
+   * see https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
+   */
   render() {
     const notes = this.state.notes;
     if (!notes) { // Initial state
@@ -170,6 +178,7 @@ class App extends Component {
     }
     
     const selectedNote = this.state.selectedNote;
+    const currentNote = notes[selectedNote];
     const editorDisabled = (notes.length === 0) ? true : false;
 
     return (
@@ -196,7 +205,8 @@ class App extends Component {
 
             <div className="container-right">
               <RichTextEditor
-                note={notes[selectedNote]}
+                note={currentNote}
+                key={currentNote._id}
                 disabled={editorDisabled}
                 onSave={this.handleSaveNote}
                 onFocus={this.handleEditorFocus}
