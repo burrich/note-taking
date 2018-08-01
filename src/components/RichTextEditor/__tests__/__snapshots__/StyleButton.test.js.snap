@@ -6,6 +6,7 @@ exports[`Active style button renders correctly 1`] = `
   as="button"
   icon={true}
   onMouseDown={[Function]}
+  role="button"
 >
   <Icon
     as="i"
@@ -20,6 +21,7 @@ exports[`Inactive style button renders correctly 1`] = `
   as="button"
   icon={true}
   onMouseDown={[Function]}
+  role="button"
 >
   <Icon
     as="i"
