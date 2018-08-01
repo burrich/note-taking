@@ -7,10 +7,6 @@ const note    = require('../db/models/note');
  */
 const router = express.Router();
 
-router.get('/foo', (req, res, next) => {
-  res.json({ foo: 'bar'});
-});
-
 // Find all
 router.get('/', (req, res, next) => {
   note.findAll((err, notes) => {
