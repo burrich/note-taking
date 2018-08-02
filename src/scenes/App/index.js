@@ -179,6 +179,7 @@ class App extends Component {
     
     const selectedNote = this.state.selectedNote;
     const currentNote = notes[selectedNote];
+    const currentNoteId = currentNote ? currentNote._id : null;
     const editorDisabled = (notes.length === 0) ? true : false;
 
     return (
@@ -206,7 +207,7 @@ class App extends Component {
             <div className="container-right">
               <RichTextEditor
                 note={currentNote}
-                key={currentNote._id}
+                key={currentNoteId}
                 disabled={editorDisabled}
                 onSave={this.handleSaveNote}
                 onFocus={this.handleEditorFocus}
