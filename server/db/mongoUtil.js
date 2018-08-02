@@ -1,8 +1,13 @@
 const MongoClient = require('mongodb').MongoClient;
 
-const url = 'mongodb://localhost:27017/noteTakingTestDB';
-
+let url;
 let database = null;
+
+if (process.env.MONGODB_URI) {
+  url = process.env.MONGODB_URI;
+} else {
+  url = 'mongodb://localhost:27017/noteTakingTestDB';
+}
 
 /*
  * Connect to mongodb db (async) and set db object.
