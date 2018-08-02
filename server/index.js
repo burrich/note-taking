@@ -14,6 +14,6 @@ mongoUtil.connect(err => {
   const port = process.env.PORT || 3100;
   
   app.listen(port, () => {
-    console.log('Express server listen on port ', port)
+    console.log(`Express server listen on port ${port}`)
   });
 });
