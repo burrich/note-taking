@@ -5,12 +5,18 @@ const notes      = require('./api/notes');
 
 const app = express();
 
+/**
+ * Configuration :
+ * - serving statics files
+ * - parsing application/json
+ * - parsing application/x-www-form-urlencoded
+ */
 app.use(express.static(path.join(__dirname,'../build')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(bodyParser.json()); // parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // parsing application/x-www-form-urlencoded
+// Routing
 app.use('/api/notes', notes);
-
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 });
