@@ -7,8 +7,10 @@
   "scripts": {
     "start": "node ./server/index.js",
     "start-local": "concurrently -k -n \"DB,API,FRONT\" -c \"blue,magenta,yellow\" \"npm run start-db\" \"npm run start-api\" \"npm run start-front\"",
+    "start-cloud": "concurrently -k -n \"API,FRONT\" -c \"magenta,yellow\" \"npm run start-api-cloud\" \"npm run start-front\"",
     "start-front": "react-scripts start",
     "start-api": "wait-on tcp:27017 && nodemon ./server/index.js",
+    "start-api-cloud": "nodemon ./server/index.js --config ./nodemon-cloud.json",
     "start-db": "mongod --dbpath C:/MongoDB/data",
     "fixtures": "mongoimport --db noteTakingTestDB --collection notes --drop --file ./server/db/fixtures/notes.json",
     "build": "react-scripts build",
