@@ -3,15 +3,16 @@
   "description:": "A note taking app with draft.js",
   "version": "0.1.0",
   "private": true,
-  "main": "index.js",
   "proxy": "http://localhost:3100",
   "scripts": {
-    "start": "concurrently -k -n \"DB,API,FRONT\" -c \"blue,magenta,yellow\" \"npm run start-db\" \"npm run start-api\" \"npm run start-front\"",
+    "start": "node ./server/index.js",
+    "start-local": "concurrently -k -n \"DB,API,FRONT\" -c \"blue,magenta,yellow\" \"npm run start-db\" \"npm run start-api\" \"npm run start-front\"",
     "start-front": "react-scripts start",
     "start-api": "wait-on tcp:27017 && nodemon ./server/index.js",
     "start-db": "mongod --dbpath C:/MongoDB/data",
     "fixtures": "mongoimport --db noteTakingTestDB --collection notes --drop --file ./server/db/fixtures/notes.json",
     "build": "react-scripts build",
+    "heroku-postbuild": "npm run build",
     "test-front": "react-scripts test --env=jsdom",
     "test-back": "jest --watch api.test.js --testURL=\"http://localhost\"",
     "eject": "react-scripts eject"
