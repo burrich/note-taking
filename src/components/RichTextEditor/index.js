@@ -20,6 +20,12 @@ class RichTextEditor extends Component {
     const editorState = this.createContent(note);
     this.state = { editorState: editorState };
 
+    console.log('note content',
+      convertToRaw(EditorState.createEmpty().getCurrentContent())
+    );
+
+    this.domEditor = React.createRef();
+
     // this methods binding
     this.onChange          = this.onChange.bind(this);
     this.onTab             = this.onTab.bind(this);
@@ -32,12 +38,14 @@ class RichTextEditor extends Component {
   }
 
   componentDidMount() {
+    console.log('componentDidMount');
     if (this.props.isFocus) {
-      this.focus();
+      this.focus(); // PB !!!
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log('componentDidUpdate');
     // Auto-save
     if (!this.props.disabled) {
       this.handleAutoSave(prevProps, prevState);
@@ -45,7 +53,7 @@ class RichTextEditor extends Component {
 
     // Focus
     if (!prevProps.isFocus && this.props.isFocus) {
-      this.focus();
+      // this.focus();
     }
   }
 
@@ -81,6 +89,8 @@ class RichTextEditor extends Component {
   handleAutoSave(prevProps, prevState) {
     const previousRawContent = convertToRaw(prevState.editorState.getCurrentContent());
     const currentRawContent  = convertToRaw(this.state.editorState.getCurrentContent());
+    console.log('previousRawContent', previousRawContent);
+    console.log('currentRawContent', currentRawContent);
 
     const currentNote = this.props.note;
     const isContentUpdated = !_.isEqual(previousRawContent, currentRawContent);
@@ -91,6 +101,7 @@ class RichTextEditor extends Component {
         ...currentNote,
         ...currentRawContent
       }
+      console.log('onUpdateContent');
       this.onUpdateContent(updatedNote);
     }
   }
@@ -118,7 +129,7 @@ class RichTextEditor extends Component {
   }
 
   focus() {
-    this.domEditor.focus();
+    this.domEditor.current.focus();
   }
   
   getCurrentStyle() {
@@ -177,7 +188,7 @@ class RichTextEditor extends Component {
                   blockStyleFn={getBlockStyle}
                   spellCheck={true}
                   readOnly={readOnly}
-                  ref={el => this.domEditor = el} />
+                  ref={this.domEditor} />
                   {/*plugins={[]} />*/}
         </div>
       </div>

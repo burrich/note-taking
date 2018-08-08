@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Header } from 'semantic-ui-react';
 import { getNotes, createNote, updateNote, deleteNote } from '../../services/api';
+// TODO: as convention and api. ?
+import { getNotes as getNotesLocal, createNote as createNoteLocal, updateNote as updateNoteLocal, initNotesId } from '../../services/apiLocal';
 
 import './styles/default.css';
 
@@ -33,7 +35,23 @@ class App extends Component {
 
   componentDidMount() {
     // Fetch notes from API and update state.
-    getNotes((err, notes) => {
+    // getNotes((err, notes) => {
+    //   if (err) return console.error(err);
+  
+    //   console.log(notes);
+      
+    //   let updatedState = { notes: notes };
+  
+    //   if (notes.length > 0) {
+    //     Object.assign(updatedState, {
+    //       selectedNote: 0,
+    //       focusEditor: true
+    //     });
+    //   }
+    //   this.setState(updatedState);
+    // });
+
+    getNotesLocal((err, notes) => {
       if (err) return console.error(err);
   
       console.log(notes);
@@ -48,6 +66,8 @@ class App extends Component {
       }
       this.setState(updatedState);
     });
+
+    initNotesId();
   }
 
   handleAddNote(name) {
@@ -69,7 +89,24 @@ class App extends Component {
     }
     const newNoteToJson = JSON.stringify(newNote);
 
-    createNote(newNoteToJson, (err, result) => {
+    // createNote(newNoteToJson, (err, result) => {
+    //   if (err) return console.error(err);
+
+    //   console.log(result);
+
+    //   // Update state with inserted id
+    //   const updatedNotes = this.state.notes.slice();
+    //   newNote._id = result.insertedId;
+    //   updatedNotes.push(newNote);
+
+    //   this.setState({
+    //     notes: updatedNotes,
+    //     selectedNote: updatedNotes.length - 1,
+    //     focusEditor: true
+    //   });
+    // });
+
+    createNoteLocal(newNoteToJson, newNote.name, (err, result) => {
       if (err) return console.error(err);
 
       console.log(result);
@@ -78,6 +115,8 @@ class App extends Component {
       const updatedNotes = this.state.notes.slice();
       newNote._id = result.insertedId;
       updatedNotes.push(newNote);
+
+      console.log('1 create', newNoteToJson);
 
       this.setState({
         notes: updatedNotes,
@@ -140,18 +179,36 @@ class App extends Component {
       blocks: note.blocks
     });
 
-    updateNote(id, rteAttrToJson, (err, result) => {
-      if (err) return console.error(err);
+    // updateNote(id, rteAttrToJson, (err, result) => {
+    //   if (err) return console.error(err);
 
-      console.log(result);
+    //   console.log(result);
 
-      // Update state
-      const updatedNotes = this.state.notes.slice();
-      const index = updatedNotes.findIndex(elt => elt._id === id);
+    //   // Update state
+    //   const updatedNotes = this.state.notes.slice();
+    //   const index = updatedNotes.findIndex(elt => elt._id === id);
 
-      updatedNotes[index] = note;
-      this.setState({ notes: updatedNotes });
-    });
+    //   updatedNotes[index] = note;
+    //   this.setState({ notes: updatedNotes });
+    // });
+
+
+    // const updatedNoteToJson = JSON.stringify(note);
+    // updateNoteLocal(id, updatedNoteToJson, (err, result) => {
+    //   if (err) return console.error(err);
+
+    //   console.log(result);
+
+    //   // Update state
+    //   const updatedNotes = this.state.notes.slice();
+    //   const index = updatedNotes.findIndex(elt => elt._id === id);
+
+    //   updatedNotes[index] = note;
+
+    //   console.log('2 save', note);
+
+    //   this.setState({ notes: updatedNotes });
+    // });
   }
 
   handleEditorFocus() {
