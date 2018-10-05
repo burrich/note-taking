@@ -36,9 +36,10 @@ function getNotes(callback) {
     });
 }
 
-
 function createNote(note, callback) {
-  fetch('/api/notes', initRequest('POST', note))
+  const noteJson = JSON.stringify(note);
+
+  fetch('/api/notes', initRequest('POST', noteJson))
     .then(res => {
       if (!res.ok) {
         throw new Error('Response failed');

@@ -8,6 +8,8 @@ import './styles/default.css';
 
 import Controls from './Controls';
 
+const LOG_TAG = '[RichTextEditor]';
+
 /**
  * RichTextEditor component implementating draft.js RTE editor.
  * TODO: reafacto contructor, willReceive and createContent
@@ -19,10 +21,6 @@ class RichTextEditor extends Component {
     const note = this.props.note;
     const editorState = this.createContent(note);
     this.state = { editorState: editorState };
-
-    console.log('note content',
-      convertToRaw(EditorState.createEmpty().getCurrentContent())
-    );
 
     this.domEditor = React.createRef();
 
@@ -38,14 +36,17 @@ class RichTextEditor extends Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount');
+    console.log(LOG_TAG, 'componentDidMount()');
     if (this.props.isFocus) {
-      this.focus(); // PB !!!
+      window.requestAnimationFrame(() => {
+        console.log(LOG_TAG, 'focus');
+        this.focus();
+      });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('componentDidUpdate');
+    console.log(LOG_TAG, 'componentDidUpdate()');
     // Auto-save
     if (!this.props.disabled) {
       this.handleAutoSave(prevProps, prevState);
@@ -89,8 +90,8 @@ class RichTextEditor extends Component {
   handleAutoSave(prevProps, prevState) {
     const previousRawContent = convertToRaw(prevState.editorState.getCurrentContent());
     const currentRawContent  = convertToRaw(this.state.editorState.getCurrentContent());
-    console.log('previousRawContent', previousRawContent);
-    console.log('currentRawContent', currentRawContent);
+    // console.log('previousRawContent', previousRawContent);
+    // console.log('currentRawContent', currentRawContent);
 
     const currentNote = this.props.note;
     const isContentUpdated = !_.isEqual(previousRawContent, currentRawContent);
@@ -101,7 +102,7 @@ class RichTextEditor extends Component {
         ...currentNote,
         ...currentRawContent
       }
-      console.log('onUpdateContent');
+      console.log(LOG_TAG, 'onUpdateContent');
       this.onUpdateContent(updatedNote);
     }
   }
@@ -160,6 +161,8 @@ class RichTextEditor extends Component {
   }
 
   render() {
+    console.log(LOG_TAG, 'render()');
+
     const editorState = this.state.editorState;
     const currentStyle = this.getCurrentStyle();
     const toggleStyle = {

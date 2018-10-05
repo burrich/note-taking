@@ -10,6 +10,8 @@ const app = express();
  * - serving statics files
  * - parsing application/json
  * - parsing application/x-www-form-urlencoded
+ * 
+ * TODO: local/heroku test for __dirname ?
  */
 app.use(express.static(path.join(__dirname,'../build')));
 app.use(bodyParser.json());

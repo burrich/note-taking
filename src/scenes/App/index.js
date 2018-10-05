@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Header } from 'semantic-ui-react';
-import { getNotes, createNote, updateNote, deleteNote } from '../../services/api';
-// TODO: as convention and api. ?
-import { getNotes as getNotesLocal, createNote as createNoteLocal, updateNote as updateNoteLocal, initNotesId } from '../../services/apiLocal';
 
 import './styles/default.css';
 
 import RichTextEditor from '../../components/RichTextEditor';
 import NotesList from '../../components/NotesList';
+import storageApi from '../../services/storageApi.js';
+
+const LOG_TAG = '[App]';
 
 /**
  * App scene functionnal component.
@@ -35,26 +35,10 @@ class App extends Component {
 
   componentDidMount() {
     // Fetch notes from API and update state.
-    // getNotes((err, notes) => {
-    //   if (err) return console.error(err);
-  
-    //   console.log(notes);
-      
-    //   let updatedState = { notes: notes };
-  
-    //   if (notes.length > 0) {
-    //     Object.assign(updatedState, {
-    //       selectedNote: 0,
-    //       focusEditor: true
-    //     });
-    //   }
-    //   this.setState(updatedState);
-    // });
-
-    getNotesLocal((err, notes) => {
+    storageApi.getNotes((err, notes) => {
       if (err) return console.error(err);
   
-      console.log(notes);
+      console.log(LOG_TAG, 'notes', notes);
       
       let updatedState = { notes: notes };
   
@@ -66,57 +50,43 @@ class App extends Component {
       }
       this.setState(updatedState);
     });
-
-    initNotesId();
   }
 
   handleAddNote(name) {
     // TODO: define newNote in RTE
     const newNote = {
-      "name": name,
-      "entityMap": {},
-      "blocks": [
+      name: name,
+      entityMap: {},
+      blocks: [
         {
-          "key": "8i5rc",
-          "text": "",
-          "type": "unstyled",
-          "depth": 0,
-          "inlineStyleRanges": [],
-          "entityRanges": [],
-          "data": {}
+          key: '8i5rc',
+          text: '',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
         }
       ]
-    }
-    const newNoteToJson = JSON.stringify(newNote);
+    };
 
-    // createNote(newNoteToJson, (err, result) => {
-    //   if (err) return console.error(err);
-
-    //   console.log(result);
-
-    //   // Update state with inserted id
-    //   const updatedNotes = this.state.notes.slice();
-    //   newNote._id = result.insertedId;
-    //   updatedNotes.push(newNote);
-
-    //   this.setState({
-    //     notes: updatedNotes,
-    //     selectedNote: updatedNotes.length - 1,
-    //     focusEditor: true
-    //   });
-    // });
-
-    createNoteLocal(newNoteToJson, newNote.name, (err, result) => {
+    storageApi.createNote(newNote, (err, result) => {
       if (err) return console.error(err);
 
-      console.log(result);
+      console.log(LOG_TAG, result);
 
-      // Update state with inserted id
+      // Update state 
+
       const updatedNotes = this.state.notes.slice();
-      newNote._id = result.insertedId;
+
+      // Add id to state note for server side storage only (mongodb)
+      if (process.env.REACT_APP_BACKEND === '1') {
+        newNote.id = result.insertedId;
+      }
+
       updatedNotes.push(newNote);
 
-      console.log('1 create', newNoteToJson);
+      console.log(LOG_TAG, 'createNote() => newNote', newNote);
 
       this.setState({
         notes: updatedNotes,
@@ -136,12 +106,13 @@ class App extends Component {
   handleEditNote(id, name) {
     const nameToJson = JSON.stringify({ name: name });
 
-    updateNote(id, nameToJson, (err, result) => {
+    storageApi.updateNote(id, nameToJson, (err, result) => {
       if (err) return console.error(err);
 
-      console.log(result);
+      console.log(LOG_TAG, result);
 
       // Update state
+      // _id ?
       const updatedNotes = this.state.notes.slice();
       updatedNotes.find(elt => elt._id === id).name = name;
 
@@ -151,13 +122,13 @@ class App extends Component {
 
   // TODO: remove id param ?
   handleRemoveNote(id, index) {
-    deleteNote(id, (err, result) => {
+    storageApi.deleteNote(id, (err, result) => {
       if (err) return console.error(err);
 
-      console.log(result);
+      console.log(LOG_TAG, result);
 
       const notes = this.state.notes;
-      const updatedNotes = notes.filter(note => note._id !== id);
+      const updatedNotes = notes.filter(note => note.id !== id);
 
       // Update notes list selected index
       let selectedNote = this.state.selectedNote;
@@ -173,6 +144,7 @@ class App extends Component {
   }
 
   handleSaveNote(note) {
+    // _id ?
     const id = note._id;
     const rteAttrToJson = JSON.stringify({
       entityMap: note.entityMap,
@@ -236,7 +208,7 @@ class App extends Component {
     
     const selectedNote = this.state.selectedNote;
     const currentNote = notes[selectedNote];
-    const currentNoteId = currentNote ? currentNote._id : null;
+    const currentNoteId = currentNote ? currentNote.id : null;
     const editorDisabled = (notes.length === 0) ? true : false;
 
     return (

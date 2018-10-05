@@ -1,3 +1,6 @@
+// Load env variables
+require('dotenv').config();
+
 const mongoUtil = require('./db/mongoUtil');
 
 /*
