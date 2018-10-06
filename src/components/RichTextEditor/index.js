@@ -36,17 +36,17 @@ class RichTextEditor extends Component {
   }
 
   componentDidMount() {
-    console.log(LOG_TAG, 'componentDidMount()');
+    // console.log(LOG_TAG, 'componentDidMount()');
     if (this.props.isFocus) {
       window.requestAnimationFrame(() => {
-        console.log(LOG_TAG, 'focus');
+        // console.log(LOG_TAG, 'focus');
         this.focus();
       });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(LOG_TAG, 'componentDidUpdate()');
+    // console.log(LOG_TAG, 'componentDidUpdate()');
     // Auto-save
     if (!this.props.disabled) {
       this.handleAutoSave(prevProps, prevState);
@@ -102,7 +102,7 @@ class RichTextEditor extends Component {
         ...currentNote,
         ...currentRawContent
       }
-      console.log(LOG_TAG, 'onUpdateContent');
+      // console.log(LOG_TAG, 'onUpdateContent');
       this.onUpdateContent(updatedNote);
     }
   }
@@ -161,7 +161,7 @@ class RichTextEditor extends Component {
   }
 
   render() {
-    console.log(LOG_TAG, 'render()');
+    // console.log(LOG_TAG, 'render()');
 
     const editorState = this.state.editorState;
     const currentStyle = this.getCurrentStyle();

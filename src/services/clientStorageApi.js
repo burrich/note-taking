@@ -32,10 +32,25 @@ function createNote(note, callback) {
     });
 }
 
-function updateNote(key, note, callback) {
-  // TODO: to implement
-  const result = null;
-  callback(null, result);
+function updateNote(id, noteAttr, callback) {
+  db.notes
+    .update(id, noteAttr)
+    .then(updated => {
+      if (updated) {
+        const result = {
+          n: 1, 
+          nModified: 1, 
+          ok: 1
+        }
+
+        callback(null, true, result);
+      } else { // updated === 0
+        callback(null, false);
+      }
+    })
+    .catch(err => {
+      callback(err);
+    });
 }
 
 function deleteNote(id, callback) {

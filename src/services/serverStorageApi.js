@@ -22,7 +22,7 @@ function getNotes(callback) {
       if (!res.ok) {
         throw new Error('Response failed');
       }
-      console.log(res);
+      // console.log(res);
       return res.json();
     })
     .then(data => {
@@ -44,7 +44,7 @@ function createNote(note, callback) {
       if (!res.ok) {
         throw new Error('Response failed');
       }
-      console.log(res);
+      // console.log(res);
       return res.json();
     })
     .then(result => {
@@ -59,19 +59,26 @@ function createNote(note, callback) {
 }
 
 function updateNote(id, noteAttr, callback) {
-  fetch('/api/notes/' + id, initRequest('PATCH', noteAttr))
+  const noteAttrJson = JSON.stringify(noteAttr);
+
+  fetch('/api/notes/' + id, initRequest('PATCH', noteAttrJson))
     .then(res => {
       if (!res.ok) {
         throw new Error('Response failed');
       }
-      console.log(res);
+      // console.log(res);
       return res.json();
     })
     .then(result => {
-      if (!result || !result.ok || result.n !== 1 || result.nModified !== 1) {
+      if (!result || !result.ok || result.n !== 1) {
         throw new Error('Unexpected json result : ' + JSON.stringify(result));
       }
-      callback(null, result);
+
+      if (result.nModified === 0) {
+        callback(null, false);
+      } else {
+        callback(null, true, result);
+      }
     })
     .catch(err => {
       callback(err);
@@ -84,7 +91,7 @@ function deleteNote(id, callback) {
       if (!res.ok) {
         throw new Error('Response failed');
       }
-      console.log(res);
+      // console.log(res);
       return res.json();
     })
     .then(result => {

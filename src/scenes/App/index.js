@@ -38,7 +38,7 @@ class App extends Component {
     storageApi.getNotes((err, notes) => {
       if (err) return console.error(err);
   
-      console.log(LOG_TAG, 'notes', notes);
+      // console.log(LOG_TAG, 'notes', notes);
       
       let updatedState = { notes: notes };
   
@@ -104,17 +104,17 @@ class App extends Component {
   }
 
   handleEditNote(id, name) {
-    const nameToJson = JSON.stringify({ name: name });
+    const noteAttrToUpdate = { name: name };
 
-    storageApi.updateNote(id, nameToJson, (err, result) => {
+    storageApi.updateNote(id, noteAttrToUpdate, (err, updated, result) => {
       if (err) return console.error(err);
+      if (!updated) return console.log(LOG_TAG, 'nothing to update');
 
-      console.log(LOG_TAG, result);
+      console.log(LOG_TAG, `note ${id} updated :`, result);
 
       // Update state
-      // _id ?
       const updatedNotes = this.state.notes.slice();
-      updatedNotes.find(elt => elt._id === id).name = name;
+      updatedNotes.find(elt => elt.id === id).name = name;
 
       this.setState({ notes: updatedNotes });
     });
