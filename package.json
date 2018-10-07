@@ -8,7 +8,7 @@
     "start": "node ./server/index.js",
     "start-local": "cross-env REACT_APP_BACKEND=1 concurrently -k -n \"BACK,FRONT\" -c \"magenta,yellow\" \"npm run start-back\" \"npm run start-front\"",
     "start-local-min": "cross-env REACT_APP_BACKEND=0 npm run start-front",
-    "start-front": "react-scripts start",
+    "start-front": "cross-env BROWSER=none react-scripts start",
     "start-back": "nodemon --inspect ./server/index.js",
     "build": "react-scripts build",
     "heroku-postbuild": "npm run build",
