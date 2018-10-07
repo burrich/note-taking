@@ -32,9 +32,9 @@ function createNote(note, callback) {
     });
 }
 
-function updateNote(id, noteAttr, callback) {
+function updateNote(id, attr, callback) {
   db.notes
-    .update(id, noteAttr)
+    .update(id, attr)
     .then(updated => {
       if (updated) {
         const result = {

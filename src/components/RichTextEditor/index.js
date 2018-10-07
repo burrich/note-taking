@@ -84,7 +84,12 @@ class RichTextEditor extends Component {
 
   // TODO: better way to define the debounce method
   onUpdateContent = _.debounce((updatedNote) => {
-    this.props.onSave(updatedNote);
+    const attrToUpdate = { 
+      entityMap: updatedNote.entityMap,
+      blocks: updatedNote.blocks
+    };
+
+    this.props.onSave(updatedNote.id, attrToUpdate);
   }, 1000);
   
   handleAutoSave(prevProps, prevState) {

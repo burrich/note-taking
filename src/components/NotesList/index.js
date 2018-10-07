@@ -53,7 +53,7 @@ class NotesList extends Component {
   handleCloseModal(e, data, submitName) {
     if (submitName) {
       const editedNote = this.state.editedNote;
-      this.props.onEditNote(editedNote.id, submitName);
+      this.props.onEditNote(editedNote.id, { name: submitName });
     }
 
     this.setState({

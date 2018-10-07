@@ -23,12 +23,15 @@ class App extends Component {
       focusEditor: false
     };
 
+    if (process.env.REACT_APP_BACKEND === '1') {
+      this.backendMode = true;
+    } // else <=> indexedDB only (dexie.js)
+
     // this methods binding
     this.handleAddNote     = this.handleAddNote.bind(this);
     this.handleSelectNote  = this.handleSelectNote.bind(this);
-    this.handleEditNote    = this.handleEditNote.bind(this);
+    this.handleUpdateNote  = this.handleUpdateNote.bind(this);
     this.handleRemoveNote  = this.handleRemoveNote.bind(this);
-    this.handleSaveNote    = this.handleSaveNote.bind(this);
     this.handleEditorFocus = this.handleEditorFocus.bind(this);
     this.handleEditorBlur  = this.handleEditorBlur.bind(this);
   }
@@ -43,11 +46,14 @@ class App extends Component {
       let updatedState;
 
       if (notes.length > 0) {
-        notes.map(note => {
-          note.id = note._id;
-          delete note._id;
-          return note;
-        });
+        // Rename _id key to id for server side storage only (mongodb)
+        if (this.backendMode) {
+          notes.map(note => {
+            note.id = note._id;
+            delete note._id;
+            return note;
+          });
+        }
 
         updatedState = { 
           notes: notes,
@@ -92,7 +98,7 @@ class App extends Component {
       const updatedNotes = this.state.notes.slice();
 
       // Add id to state note for server side storage only (mongodb)
-      if (process.env.REACT_APP_BACKEND === '1') {
+      if (this.backendMode) {
         newNote.id = result.insertedId;
       }
 
@@ -112,23 +118,6 @@ class App extends Component {
     this.setState({
       selectedNote: index,
       focusEditor: true
-    });
-  }
-
-  handleEditNote(id, name) {
-    const noteAttrToUpdate = { name: name };
-
-    storageApi.updateNote(id, noteAttrToUpdate, (err, updated, result) => {
-      if (err) return console.error(err);
-      if (!updated) return console.log(LOG_TAG, 'nothing to update');
-
-      console.log(LOG_TAG, `note ${id} updated :`, result);
-
-      // Update state
-      const updatedNotes = this.state.notes.slice();
-      updatedNotes.find(elt => elt.id === id).name = name;
-
-      this.setState({ notes: updatedNotes });
     });
   }
 
@@ -155,44 +144,20 @@ class App extends Component {
     });
   }
 
-  handleSaveNote(note) {
-    // _id ?
-    const id = note._id;
-    const rteAttrToJson = JSON.stringify({
-      entityMap: note.entityMap,
-      blocks: note.blocks
+  handleUpdateNote(id, attr) {
+    storageApi.updateNote(id, attr, (err, updated, result) => {
+      if (err) return console.error(err);
+      if (!updated) return console.log(LOG_TAG, 'nothing to update');
+
+      console.log(LOG_TAG, `note ${id} updated :`, result);
+
+      // Update state
+      const notesToUpdate = this.state.notes.slice();
+      const iNoteToUpdate = notesToUpdate.findIndex(elt => elt.id === id);
+      notesToUpdate[iNoteToUpdate] = { ...notesToUpdate[iNoteToUpdate], ...attr};
+
+      this.setState({ notes: notesToUpdate });
     });
-
-    // updateNote(id, rteAttrToJson, (err, result) => {
-    //   if (err) return console.error(err);
-
-    //   console.log(result);
-
-    //   // Update state
-    //   const updatedNotes = this.state.notes.slice();
-    //   const index = updatedNotes.findIndex(elt => elt._id === id);
-
-    //   updatedNotes[index] = note;
-    //   this.setState({ notes: updatedNotes });
-    // });
-
-
-    // const updatedNoteToJson = JSON.stringify(note);
-    // updateNoteLocal(id, updatedNoteToJson, (err, result) => {
-    //   if (err) return console.error(err);
-
-    //   console.log(result);
-
-    //   // Update state
-    //   const updatedNotes = this.state.notes.slice();
-    //   const index = updatedNotes.findIndex(elt => elt._id === id);
-
-    //   updatedNotes[index] = note;
-
-    //   console.log('2 save', note);
-
-    //   this.setState({ notes: updatedNotes });
-    // });
   }
 
   handleEditorFocus() {
@@ -241,7 +206,7 @@ class App extends Component {
                 selectedNote={selectedNote}
                 onAddNote={this.handleAddNote}
                 onSelectNote={this.handleSelectNote}
-                onEditNote={this.handleEditNote}
+                onEditNote={this.handleUpdateNote}
                 onRemoveNote={this.handleRemoveNote} />
             </div>
 
@@ -250,7 +215,7 @@ class App extends Component {
                 note={currentNote}
                 key={currentNoteId}
                 disabled={editorDisabled}
-                onSave={this.handleSaveNote}
+                onSave={this.handleUpdateNote}
                 onFocus={this.handleEditorFocus}
                 onBlur={this.handleEditorBlur}
                 isFocus={this.state.focusEditor} />
