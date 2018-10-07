@@ -39,15 +39,27 @@ class App extends Component {
       if (err) return console.error(err);
   
       // console.log(LOG_TAG, 'notes', notes);
-      
-      let updatedState = { notes: notes };
-  
+
+      let updatedState;
+
       if (notes.length > 0) {
-        Object.assign(updatedState, {
+        notes.map(note => {
+          note.id = note._id;
+          delete note._id;
+          return note;
+        });
+
+        updatedState = { 
+          notes: notes,
           selectedNote: 0,
           focusEditor: true
-        });
+        };
+      } else {
+        updatedState = { 
+          notes: notes,
+        };
       }
+      
       this.setState(updatedState);
     });
   }
