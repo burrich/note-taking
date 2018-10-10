@@ -133,13 +133,14 @@ class App extends Component {
 
       // Update notes list selected index
       let selectedNote = this.state.selectedNote;
-      if (selectedNote > 0 && index <= selectedNote) {
+      if (updatedNotes.length === 0 || (selectedNote > 0 && index <= selectedNote)) {
         selectedNote--;
       }
 
       this.setState({
         notes: updatedNotes,
-        selectedNote: selectedNote
+        selectedNote: selectedNote,
+        focusEditor: selectedNote !== -1
       });
     });
   }

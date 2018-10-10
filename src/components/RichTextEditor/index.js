@@ -35,35 +35,33 @@ class RichTextEditor extends Component {
     this.toggleBlockStyle  = this.toggleBlockStyle.bind(this);
   }
 
+  /**
+   * RTE is mounted on every props.note changes (new instance with key prop).
+   */
   componentDidMount() {
     // console.log(LOG_TAG, 'componentDidMount()');
+
     if (this.props.isFocus) {
-      window.requestAnimationFrame(() => {
-        // console.log(LOG_TAG, 'focus');
-        this.focus();
-      });
+      this.focus();
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     // console.log(LOG_TAG, 'componentDidUpdate()');
-    
+
     // Auto-save
     if (!this.props.disabled) {
       this.handleAutoSave(prevState);
     }
 
-    // Focus
+    // Focus (when a note is deleted)
     if (!prevProps.isFocus && this.props.isFocus) {
-      // this.focus();
+      this.focus();
     }
   }
 
   onChange(editorState) {  
     this.setState({ editorState });
-  
-    // const rawContent = convertToRaw(editorState.getCurrentContent());
-    // console.log(JSON.stringify(rawContent, null, 2));
   }
 
   onTab(e) {
@@ -136,6 +134,7 @@ class RichTextEditor extends Component {
   }
 
   focus() {
+    // console.log(LOG_TAG, 'focus()');
     this.domEditor.current.focus();
   }
   
