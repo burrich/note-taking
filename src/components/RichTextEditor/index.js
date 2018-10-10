@@ -47,9 +47,10 @@ class RichTextEditor extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // console.log(LOG_TAG, 'componentDidUpdate()');
+    
     // Auto-save
     if (!this.props.disabled) {
-      this.handleAutoSave(prevProps, prevState);
+      this.handleAutoSave(prevState);
     }
 
     // Focus
@@ -82,32 +83,32 @@ class RichTextEditor extends Component {
     }
   }
 
-  // TODO: better way to define the debounce method
-  onUpdateContent = _.debounce((updatedNote) => {
-    const attrToUpdate = { 
-      entityMap: updatedNote.entityMap,
-      blocks: updatedNote.blocks
-    };
+  /**
+   * Callback called only when the last time the function was invoked was 1 min ago.
+   * Note update (onSave) delayed until user release the keyboard. We are checking if note
+   * content has changed from the storage too.
+   */
+  onUpdateContent = _.debounce(updatedNote => {
+    const propsNote = this.props.note;
 
-    this.props.onSave(updatedNote.id, attrToUpdate);
+    if (!_.isEqual(updatedNote.blocks, propsNote.blocks)) {
+      const attrToUpdate = { 
+        blocks: updatedNote.blocks
+      };
+
+      this.props.onSave(propsNote.id, attrToUpdate);
+    }
   }, 1000);
   
-  handleAutoSave(prevProps, prevState) {
-    const previousRawContent = convertToRaw(prevState.editorState.getCurrentContent());
-    const currentRawContent  = convertToRaw(this.state.editorState.getCurrentContent());
-    // console.log('previousRawContent', previousRawContent);
-    // console.log('currentRawContent', currentRawContent);
+  /**
+   * Check for contentState update and call the debounced method onUpdateContent.
+   */
+  handleAutoSave(prevState) {
+    const previousContentState = prevState.editorState.getCurrentContent();
+    const currentContentState = this.state.editorState.getCurrentContent();
 
-    const currentNote = this.props.note;
-    const isContentUpdated = !_.isEqual(previousRawContent, currentRawContent);
-    const hasNoteChanged = (currentNote !== prevProps.note) ? true : false;
-
-    if (isContentUpdated && !hasNoteChanged) {
-      const updatedNote = {
-        ...currentNote,
-        ...currentRawContent
-      }
-      // console.log(LOG_TAG, 'onUpdateContent');
+    if (!previousContentState.equals(currentContentState)) {
+      const updatedNote = convertToRaw(currentContentState);
       this.onUpdateContent(updatedNote);
     }
   }
