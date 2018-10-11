@@ -2,7 +2,7 @@
  * Retrieve mongodb data from express restful api.
  */
 
-const LOG_TAG = '[serverStorageApi]';
+// const LOG_TAG = '[serverStorageApi]';
 
 function initRequest(method, body = null) {
   const headers = new Headers();

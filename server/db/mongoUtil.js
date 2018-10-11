@@ -1,5 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 
+const LOG_TAG = '[INFO]';
+
 const url = process.env.MONGODB_URI;
 let database = null;
 
@@ -12,7 +14,7 @@ exports.connect = function(callback) {
   MongoClient.connect(url, (err, db) => {
     if (err) return callback(err);
     
-    console.log("Connected successfully to MongoDB server");
+    console.log(LOG_TAG, 'Connected successfully to MongoDB server');
     database = db;
     callback(null);
   });
