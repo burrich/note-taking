@@ -1,8 +1,12 @@
 # Note taking
 
-A note taking app implementing draft rte with **react**, **express** and **mongodb**. Semantic UI is used for styling components.
+A note taking app implementing Draft.js RTE with **React**, **Express** and **MongoDB**. Semantic UI is used for styling components.
 
-Demo link : https://note-taking-nj.herokuapp.com/
+## Demo
+
+The demo version is a static app (client-side only). Dexie (**IndexedDB** wrapper) is used for data storage.
+
+link : https://note-taking-demo.herokuapp.com/
 
 ## Features
 
