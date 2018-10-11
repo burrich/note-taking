@@ -8,7 +8,7 @@ import './styles/default.css';
 
 import Controls from './Controls';
 
-const LOG_TAG = '[RichTextEditor]';
+// const LOG_TAG = '[RichTextEditor]';
 
 /**
  * RichTextEditor component implementating draft.js RTE editor.

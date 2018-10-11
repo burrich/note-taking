@@ -71,7 +71,6 @@ class App extends Component {
   }
 
   handleAddNote(name) {
-    // TODO: define newNote in RTE
     const newNote = {
       name: name,
       entityMap: {},
@@ -91,7 +90,7 @@ class App extends Component {
     storageApi.createNote(newNote, (err, result) => {
       if (err) return console.error(err);
 
-      console.log(LOG_TAG, result);
+      // console.log(LOG_TAG, 'createNote() result :', result);
 
       // Update state 
 
@@ -104,7 +103,7 @@ class App extends Component {
 
       updatedNotes.push(newNote);
 
-      console.log(LOG_TAG, 'createNote() => newNote', newNote);
+      console.log(LOG_TAG, 'new note added :', newNote);
 
       this.setState({
         notes: updatedNotes,
@@ -150,7 +149,7 @@ class App extends Component {
       if (err) return console.error(err);
       if (!updated) return console.log(LOG_TAG, 'nothing to update');
 
-      console.log(LOG_TAG, `note ${id} updated :`, result);
+      console.log(LOG_TAG, result);
 
       // Update state
       const notesToUpdate = this.state.notes.slice();

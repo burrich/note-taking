@@ -37,13 +37,7 @@ function updateNote(id, attr, callback) {
     .update(id, attr)
     .then(updated => {
       if (updated) {
-        const result = {
-          n: 1, 
-          nModified: 1, 
-          ok: 1
-        }
-
-        callback(null, true, result);
+        callback(null, true, `note ${id} updated`);
       } else { // updated === 0
         callback(null, false);
       }

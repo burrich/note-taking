@@ -1,7 +1,8 @@
-
 /**
  * Retrieve mongodb data from express restful api.
  */
+
+const LOG_TAG = '[serverStorageApi]';
 
 function initRequest(method, body = null) {
   const headers = new Headers();
@@ -22,7 +23,8 @@ function getNotes(callback) {
       if (!res.ok) {
         throw new Error('Response failed');
       }
-      // console.log(res);
+      // console.log(LOG_TAG, 'getNotes()', res);
+
       return res.json();
     })
     .then(data => {
@@ -44,7 +46,8 @@ function createNote(note, callback) {
       if (!res.ok) {
         throw new Error('Response failed');
       }
-      // console.log(res);
+      // console.log(LOG_TAG, 'createNote()', res);
+
       return res.json();
     })
     .then(result => {
@@ -58,6 +61,7 @@ function createNote(note, callback) {
     });
 }
 
+// TODO: rename noteAttr
 function updateNote(id, noteAttr, callback) {
   const noteAttrJson = JSON.stringify(noteAttr);
 
@@ -66,7 +70,8 @@ function updateNote(id, noteAttr, callback) {
       if (!res.ok) {
         throw new Error('Response failed');
       }
-      // console.log(res);
+      // console.log(LOG_TAG, 'updateNote()', res);
+      
       return res.json();
     })
     .then(result => {
@@ -77,7 +82,7 @@ function updateNote(id, noteAttr, callback) {
       if (result.nModified === 0) {
         callback(null, false);
       } else {
-        callback(null, true, result);
+        callback(null, true, `note ${id} updated`);
       }
     })
     .catch(err => {
@@ -91,14 +96,15 @@ function deleteNote(id, callback) {
       if (!res.ok) {
         throw new Error('Response failed');
       }
-      // console.log(res);
+      // console.log(LOG_TAG, 'deleteNote()', res);
+
       return res.json();
     })
     .then(result => {
       if (!result || !result.ok || result.n !== 1) {
         throw new Error('Unexpected json result : ' + JSON.stringify(result));
       }
-      callback(null, result);
+      callback(null, `note ${id} successfully deleted`);
     })
     .catch(err => {
       callback(err);

@@ -7,12 +7,14 @@ const note    = require('../db/models/note');
  */
 const router = express.Router();
 
+const LOG_TAG = '[API/NOTES]';
+
 // Find all
 router.get('/', (req, res, next) => {
   note.findAll((err, notes) => {
     if (err) return next(err);
 
-    console.log('READ :', JSON.stringify(notes, null, 2));
+    console.log(LOG_TAG, 'READ :', JSON.stringify(notes, null, 2));
     res.json(notes);
   });
 });
@@ -24,7 +26,7 @@ router.get('/:noteId', (req, res, next) => {
   note.find(noteId, (err, result) => {
     if (err) return next(err);
 
-    console.log('READ :', JSON.stringify(result, null, 2));
+    console.log(LOG_TAG, 'READ :', JSON.stringify(result, null, 2));
     res.json(result);
   });
 });
@@ -41,7 +43,7 @@ router.post('/', (req, res, next) => {
   note.insert(jsonNote, (err, result) => {
     if (err) return next(err);
 
-    console.log('CREATE :', result);
+    console.log(LOG_TAG, 'CREATE :', JSON.stringify(result, null, 2));
     const results = { ...result.result, insertedId: result.insertedId };
     res.json(results);
   });
@@ -55,7 +57,7 @@ router.patch('/:noteId', (req, res, next) => {
   note.update(noteId, noteAttr, (err, result) => {
     if (err) return next(err);
 
-    console.log('UPDATE :', result.result);
+    console.log(LOG_TAG, 'UPDATE :', JSON.stringify(result.result, null, 2));
     res.json(result);
   });
 });
@@ -67,7 +69,7 @@ router.delete('/:noteId', (req, res, next) => {
   note.delete(noteId, (err, result) => {
     if (err) return next(err);
 
-    console.log('DELETE :', result.result);
+    console.log(LOG_TAG, 'DELETE :', JSON.stringify(result.result, null, 2));
     res.json(result);
   });
 });
