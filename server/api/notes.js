@@ -4,6 +4,7 @@ const note    = require('../db/models/note');
 /*
  * Router for notes CRUD
  * TODO: error handling => check body and path attr
+ * TODO: next needed ?
  */
 const router = express.Router();
 
@@ -13,6 +14,9 @@ const LOG_TAG = '[API/NOTES]';
 router.get('/', (req, res, next) => {
   note.findAll((err, notes) => {
     if (err) return next(err);
+
+    // Check if user is user is authenticated (to remove)
+    // console.log(LOG_TAG, 'req.user', req.user);
 
     console.log(LOG_TAG, 'READ :', JSON.stringify(notes, null, 2));
     res.json(notes);
