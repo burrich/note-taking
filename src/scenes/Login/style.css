@@ -1,0 +1,9 @@
+.Login {
+  width: 300px;
+  margin: 0 auto;
+  min-height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

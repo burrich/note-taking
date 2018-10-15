@@ -7,13 +7,13 @@ import RichTextEditor from '../../components/RichTextEditor';
 import NotesList from '../../components/NotesList';
 import storageApi from '../../services/storageApi.js';
 
-const LOG_TAG = '[App]';
+const LOG_TAG = '[NoteEditor]';
 
 /**
- * App scene functionnal component.
- *
+ * NoteEditor scene functionnal component.
+ * TODO: rename to NoteEditor
  */
-class App extends Component {
+class NoteEditor extends Component {
   constructor(props) {
     super(props);
 
@@ -189,7 +189,7 @@ class App extends Component {
     const editorDisabled = (notes.length === 0) ? true : false;
 
     return (
-      <div className="App">
+      <div className="NoteEditor">
         <div className="header">
           <Header
             as="h1"
@@ -227,4 +227,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default NoteEditor;
