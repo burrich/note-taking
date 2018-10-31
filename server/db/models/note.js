@@ -1,46 +1,22 @@
-const mongoUtil = require('../mongoUtil');
-const ObjectId  = require('mongodb').ObjectId;
+const mongoose = require('mongoose');
 
-const db = mongoUtil.getDb();
-const notes = db.collection('notes');
+/**
+ * Define Note model.
+ */
 
-exports.findAll = function(callback) {
-  notes.find().toArray((err, results) => {
-    if (err) return callback(err);
-    callback(null, results);
-  });
-};
+// Note schema with option typeKey in order to add a non mongoose type key
+const noteSchema = new mongoose.Schema({
+  name: String,
+  entityMap: Object,
+  blocks: [{
+    key: String,
+    text: String,
+    type: String,
+    depth: Number,
+    inlineStyleRanges: Array,
+    entityRanges: Array,
+    data: Object
+  }]
+}, { typeKey: '$type' } );
 
-exports.find = function(id, callback) {
-  const objectId = new ObjectId(id);
-
-  notes.findOne({ _id: objectId }, (err, result) => {
-    if (err) return callback(err);
-    callback(null, result);
-  });
-};
-
-exports.insert = function(note, callback) {
-  notes.insertOne(note, (err, result) => {
-    if (err) return callback(err);
-    callback(null, result);
-  });
-};
-
-exports.update = function(id, attr, callback) {
-  const objectId = new ObjectId(id);
-
-  notes.updateOne({ _id: objectId }, { $set: attr }, (err, result) => {
-    if (err) return callback(err);
-    callback(null, result);
-  });
-};
-
-exports.delete = function(id, callback) {
-  const objectId = new ObjectId(id);
-
-  notes.deleteOne({ _id: objectId }, (err, result) => {
-    if (err) return callback(err);
-    callback(null, result);
-  });
-};
+module.exports = mongoose.model('Note', noteSchema);

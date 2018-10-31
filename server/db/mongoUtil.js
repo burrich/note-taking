@@ -1,9 +1,8 @@
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 
 const LOG_TAG = '[INFO]';
 
 const url = process.env.MONGODB_URI;
-let database = null;
 
 /*
  * Connect to mongodb db (async) and set db object.
@@ -11,15 +10,13 @@ let database = null;
 exports.connect = function(callback) {
   if (url === undefined) throw new Error('process.env.MONGODB_URI undefined');
 
-  MongoClient.connect(url, (err, db) => {
-    if (err) return callback(err);
-    
-    console.log(LOG_TAG, 'Connected successfully to MongoDB server');
-    database = db;
+  mongoose.connect(url);
+
+  const db = mongoose.connection;
+  
+  db.on('error', console.error.bind(console, 'connection error:')); // ???
+  db.once('open', () => {
+    console.log(LOG_TAG, 'Connected successfully to MongoDB server via mongoose');
     callback(null);
   });
 };
-
-exports.getDb = function() {
-  return database;
-}

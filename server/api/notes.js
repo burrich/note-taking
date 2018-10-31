@@ -1,17 +1,20 @@
 const express = require('express');
-const note    = require('../db/models/note');
+const _ = require('lodash');
 
-/*
- * Router for notes CRUD
- * TODO: error handling => check body and path attr
- */
-const router = express.Router();
+const Note = require('../db/models/Note');
 
 const LOG_TAG = '[API/NOTES]';
 
+/*
+* Router for notes CRUD
+* TODO: error handling => check body and path attr
+*/
+
+const router = express.Router();
+
 // Find all
 router.get('/', (req, res, next) => {
-  note.findAll((err, notes) => {
+  Note.find(function(err, notes) {
     if (err) return next(err);
 
     console.log(LOG_TAG, 'READ :', JSON.stringify(notes, null, 2));
@@ -23,29 +26,33 @@ router.get('/', (req, res, next) => {
 router.get('/:noteId', (req, res, next) => {
   const noteId = req.params.noteId; 
 
-  note.find(noteId, (err, result) => {
+  Note.findById(noteId, (err, note) => {
     if (err) return next(err);
 
-    console.log(LOG_TAG, 'READ :', JSON.stringify(result, null, 2));
-    res.json(result);
+    console.log(LOG_TAG, 'READ :', JSON.stringify(note, null, 2));
+    res.json(note);
   });
 });
 
 // Insert
 router.post('/', (req, res, next) => {
-  const jsonNote = req.body;
+  const bodyNote = req.body;
+
   // TODO: use lodash lib to check empty object
-  if (Object.keys(jsonNote).length === 0) {
+  if (Object.keys(bodyNote).length === 0) {
     const err = new Error('Invalid body content');
     return next(err);
   }
 
-  note.insert(jsonNote, (err, result) => {
+  const newNote = new Note(bodyNote);
+  newNote.save(function(err, savedNote) {
     if (err) return next(err);
 
-    console.log(LOG_TAG, 'CREATE :', JSON.stringify(result, null, 2));
-    const results = { ...result.result, insertedId: result.insertedId };
-    res.json(results);
+    console.log(LOG_TAG, 'CREATE :', JSON.stringify(savedNote, null, 2));
+    res.json({
+      ok: 1,
+      insertedId: savedNote._id
+    });
   });
 });
 
@@ -54,11 +61,11 @@ router.patch('/:noteId', (req, res, next) => {
   const noteId = req.params.noteId;
   const noteAttr = req.body;
 
-  note.update(noteId, noteAttr, (err, result) => {
+  Note.update({ _id: noteId }, noteAttr, function(err, result) {
     if (err) return next(err);
 
-    console.log(LOG_TAG, 'UPDATE :', JSON.stringify(result.result, null, 2));
-    res.json(result);
+    console.log(LOG_TAG, 'UPDATE :', JSON.stringify(result, null, 2));
+    res.json(_.pick(result, ['ok', 'nModified']));
   });
 });
 
@@ -66,11 +73,11 @@ router.patch('/:noteId', (req, res, next) => {
 router.delete('/:noteId', (req, res, next) => {
   const noteId = req.params.noteId;
 
-  note.delete(noteId, (err, result) => {
+  Note.deleteOne({ _id: noteId }, (err) => {
     if (err) return next(err);
 
-    console.log(LOG_TAG, 'DELETE :', JSON.stringify(result.result, null, 2));
-    res.json(result);
+    console.log(LOG_TAG, 'DELETE :', `note ${noteId}`);
+    res.json({ ok: 1 });
   });
 });
 

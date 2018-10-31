@@ -24,6 +24,7 @@
     "express": "^4.16.3",
     "lodash": "^4.17.11",
     "mongodb": "^2.2.36",
+    "mongoose": "^5.3.6",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-modal": "^3.6.1",
